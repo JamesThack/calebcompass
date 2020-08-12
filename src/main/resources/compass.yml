@@ -1,0 +1,35 @@
+#This file controls how the compass looks, if you mess it up just delete this file.
+#Use & for colour codes
+directions:
+  north: "&e&l"
+  northeast: "&6&l"
+  east: "&e&l"
+  southeast: "&6&l"
+  south: "&e&l"
+  southwest: "&6&l"
+  west: "&e&l"
+  northwest: "&6&l"
+gencompass:
+  pointercolour: "&3&l"
+  emptycolour: "&f&l"
+  emptysymbol: "⬟"
+  questcolour: "&c&l"
+  questsymbol: " !!! "
+  start: "&e&l≪─ "
+  end: " &e§l─≫"
+  barcolour: "White"
+  # List of colours (case insensitive):
+  # Pink
+  # Blue
+  # Purple
+  # White
+  # Red
+  # Green
+  # Yellow
+  barstyle: "Solid"
+  # List of styles (case insensitive):
+  # Solid
+  # Segmented_6
+  # Segmented_10
+  # Segmented_12
+  # Segmented_20

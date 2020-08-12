@@ -1,0 +1,10 @@
+name: CalebCompass
+version: 1.0
+main: calebcompass.calebcompass.CalebCompass
+api-version: 1.13
+description: CalebCompass
+
+commands:
+  calebcompass:
+    usage: '§e/calebcompass help'
+    aliases: [calcomp]

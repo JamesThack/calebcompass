@@ -1,6 +1,6 @@
 package calebcompass.calebcompass.util;
 
-public enum Symbols {
+public enum Symbol {
 
 	NORTH("north"),
 	NORTH_EAST("north-east"),
@@ -18,7 +18,7 @@ public enum Symbols {
 
 	private final String name;
 
-	Symbols(String name) {
+	Symbol(String name) {
 		this.name = name;
 	}
 

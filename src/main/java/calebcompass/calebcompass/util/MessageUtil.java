@@ -10,30 +10,30 @@ public class MessageUtil {
 	private static final Pattern HEX_PATTERN = Pattern.compile("&(#\\w{6})");
 
 	public static String replaceHovered(String insert) {
-		insert = insert.replace("▚", Util.getHovered(Symbols.SOUTH))
-				.replace("▛", Util.getHovered(Symbols.SOUTH_WEST))
-				.replace("▜", Util.getHovered(Symbols.WEST))
-				.replace("▝", Util.getHovered(Symbols.NORTH_WEST))
-				.replace("▞", Util.getHovered(Symbols.NORTH))
-				.replace("▟", Util.getHovered(Symbols.NORTH_EAST))
-				.replace("▘", Util.getHovered(Symbols.EAST))
-				.replace("▙", Util.getHovered(Symbols.SOUTH_EAST))
-				.replace("⬟", Util.getHovered(Symbols.FILLED))
-				.replace("▓", Util.getHovered(Symbols.TRACKER));
+		insert = insert.replace("▚", Util.getHovered(Symbol.SOUTH))
+				.replace("▛", Util.getHovered(Symbol.SOUTH_WEST))
+				.replace("▜", Util.getHovered(Symbol.WEST))
+				.replace("▝", Util.getHovered(Symbol.NORTH_WEST))
+				.replace("▞", Util.getHovered(Symbol.NORTH))
+				.replace("▟", Util.getHovered(Symbol.NORTH_EAST))
+				.replace("▘", Util.getHovered(Symbol.EAST))
+				.replace("▙", Util.getHovered(Symbol.SOUTH_EAST))
+				.replace("⬟", Util.getHovered(Symbol.FILLED))
+				.replace("▓", Util.getHovered(Symbol.TRACKER));
 		return insert;
 	}
 
 	public static String replaceRegular(String insert) {
-		insert = insert.replace("▚", Util.getRegular(Symbols.SOUTH))
-				.replace("▛", Util.getRegular(Symbols.SOUTH_WEST))
-				.replace("▜", Util.getRegular(Symbols.WEST))
-				.replace("▝", Util.getRegular(Symbols.NORTH_WEST))
-				.replace("▞", Util.getRegular(Symbols.NORTH))
-				.replace("▟", Util.getRegular(Symbols.NORTH_EAST))
-				.replace("▘", Util.getRegular(Symbols.EAST))
-				.replace("▙", Util.getRegular(Symbols.SOUTH_EAST))
-				.replace("⬟", Util.getRegular(Symbols.FILLED))
-				.replace("▓", Util.getRegular(Symbols.TRACKER));
+		insert = insert.replace("▚", Util.getRegular(Symbol.SOUTH))
+				.replace("▛", Util.getRegular(Symbol.SOUTH_WEST))
+				.replace("▜", Util.getRegular(Symbol.WEST))
+				.replace("▝", Util.getRegular(Symbol.NORTH_WEST))
+				.replace("▞", Util.getRegular(Symbol.NORTH))
+				.replace("▟", Util.getRegular(Symbol.NORTH_EAST))
+				.replace("▘", Util.getRegular(Symbol.EAST))
+				.replace("▙", Util.getRegular(Symbol.SOUTH_EAST))
+				.replace("⬟", Util.getRegular(Symbol.FILLED))
+				.replace("▓", Util.getRegular(Symbol.TRACKER));
 		return insert;
 	}
 

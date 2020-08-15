@@ -7,7 +7,7 @@ regular:
   south-west: '&6&lSW'
   west: '&e&lW'
   north-west: '&6&lNW'
-  filled: '&f&l⬟'
+  filled: '&#ffffff&l⬟'
   tracker: '&c&l !!! '
 
 hovered:

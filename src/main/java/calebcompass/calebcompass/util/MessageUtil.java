@@ -51,8 +51,15 @@ public class MessageUtil {
 		return Util.getSymbolStart() + replaceRegular(over.substring(0, 10)) + replaceHovered(String.valueOf(over.charAt(10))) + replaceRegular(over.substring(11)) + Util.getSymbolEnd();
 	}
 
-	public static String colorize(String message) {
-		return message.replace("&", "§");
-	}
+    public static String colorize(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', message));
+        StringBuffer buffer = new StringBuffer();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1).toUpperCase()).toString());
+        }
+
+        return matcher.appendTail(buffer).toString();
+    }
 
 }

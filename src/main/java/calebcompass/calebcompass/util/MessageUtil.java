@@ -52,14 +52,7 @@ public class MessageUtil {
 	}
 
 	public static String colorize(String message) {
-		Matcher matcher = HEX_PATTERN.matcher(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', message));
-		StringBuffer buffer = new StringBuffer();
-
-		while (matcher.find()) {
-			matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1).toUpperCase()).toString());
-		}
-
-		return matcher.appendTail(buffer).toString();
+		return message.replace("&", "§");
 	}
 
 }

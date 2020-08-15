@@ -64,6 +64,16 @@ public class CompassInstance {
 		add.setShowing(Tracking);
 	}
 
+	public void setPlayerVisible (UUID player, boolean Tracking) {
+		CompassLocation add = getCompassLocation(player);
+		if (add == null) {
+			addCompassLocation(player, new Location(Bukkit.getWorld("NULL"), 0,0,0), new Location(Bukkit.getWorld("NULL"), 0,0,0));
+			add = getCompassLocation(player);
+			add.setTracking(false);
+		}
+		add.setShowing(Tracking);
+	}
+
 	public boolean isCompassVisible(Player player) {
 		CompassLocation add = getCompassLocation(player);
 		if (add == null) return true;
@@ -80,6 +90,13 @@ public class CompassInstance {
 	public CompassLocation getCompassLocation(Player player) {
 		for (CompassLocation cur : compassLocations) {
 			if (cur.getUUID().equals(player.getUniqueId())) return cur;
+		}
+		return null;
+	}
+
+	public CompassLocation getCompassLocation(UUID player) {
+		for (CompassLocation cur : compassLocations) {
+			if (cur.getUUID().equals(player)) return cur;
 		}
 		return null;
 	}
@@ -121,7 +138,7 @@ public class CompassInstance {
 			String path = "playerdata.";
 
 			compassConfig.set(path + uuid + ".istracking", loc.isTracking());
-			compassConfig.set(path + uuid + ".world", loc.getOrigin().getWorld().getName());
+			if (loc.getOrigin().getWorld() != null) compassConfig.set(path + uuid + ".world", loc.getOrigin().getWorld().getName());
 			compassConfig.set(path + uuid + ".origin.x", loc.getOrigin().getBlockX() + 0.5);
 			compassConfig.set(path + uuid + ".origin.y", loc.getOrigin().getBlockY());
 			compassConfig.set(path + uuid + ".origin.z", loc.getOrigin().getBlockZ() + 0.5);
@@ -167,7 +184,7 @@ public class CompassInstance {
 					continue;
 				}
 
-				if (compassConfig.isBoolean(curPath + "viewing")) setPlayerVisible(Bukkit.getPlayer(uuid), compassConfig.getBoolean(curPath + "viewing"));
+				if (compassConfig.isBoolean(curPath + "viewing")) setPlayerVisible(uuid, compassConfig.getBoolean(curPath + "viewing"));
 			} catch (Exception e) {
 				CalebCompass.log("Error found in player data for player with uuid '" + uuid + "' - skipping");
 			}

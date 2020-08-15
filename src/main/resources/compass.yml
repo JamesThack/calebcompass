@@ -7,8 +7,8 @@ regular:
   south-west: '&6&lSW'
   west: '&e&lW'
   north-west: '&6&lNW'
-  filled: '&2⬟'
-  tracker: '&c&l!!!'
+  filled: '&f&l⬟'
+  tracker: '&c&l !!! '
 
 hovered:
   north: '&b&lN'
@@ -19,11 +19,11 @@ hovered:
   south-west: '&b&lSW'
   west: '&b&lW'
   north-west: '&b&lNW'
-  filled: '&b⬟'
-  tracker: '&b&l!!!'
+  filled: '&b&l⬟'
+  tracker: '&b&l !!! '
 
-symbol-start: '&e&l≪─'
-symbol-end: '&e&l─≫'
+symbol-start: '&e&l≪─ '
+symbol-end: '&e&l ─≫'
 
 bar-color: purple
 bar-style: solid

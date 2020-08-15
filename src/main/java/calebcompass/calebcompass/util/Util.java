@@ -8,9 +8,9 @@ import org.bukkit.boss.BarStyle;
 
 public class Util {
 
-	private static final Map<Symbols, String> regular = new HashMap<>();
+	private static final Map<Symbol, String> regular = new HashMap<>();
 
-	private static final Map<Symbols, String> hovered = new HashMap<>();
+	private static final Map<Symbol, String> hovered = new HashMap<>();
 
 	private static BarColor barColor;
 	private static BarStyle barStyle;
@@ -18,19 +18,19 @@ public class Util {
 	private static String symbolStart;
 	private static String symbolEnd;
 
-	public static Map<Symbols, String> getRegular() {
+	public static Map<Symbol, String> getRegular() {
 		return regular;
 	}
 
-	public static Map<Symbols, String> getHovered() {
+	public static Map<Symbol, String> getHovered() {
 		return hovered;
 	}
 
-	public static String getRegular(Symbols symbol) {
+	public static String getRegular(Symbol symbol) {
 		return MessageUtil.colorize(regular.get(symbol));
 	}
 
-	public static String getHovered(Symbols symbol) {
+	public static String getHovered(Symbol symbol) {
 		return MessageUtil.colorize(hovered.get(symbol));
 	}
 

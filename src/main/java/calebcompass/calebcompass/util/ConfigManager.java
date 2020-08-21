@@ -60,8 +60,9 @@ public class ConfigManager {
 		setDefaultValue(regPath + Symbol.SOUTH_WEST.getName(), "&6&l" + "SW");
 		setDefaultValue(regPath + Symbol.WEST.getName(), "&e&l" + "W");
 		setDefaultValue(regPath + Symbol.NORTH_WEST.getName(), "&6&l" + "NW");
-		setDefaultValue(regPath + Symbol.FILLED.getName(), "&2" + "⬟");
-		setDefaultValue(regPath + Symbol.TRACKER.getName(), "&c&l" + "!!!");
+		setDefaultValue(regPath + Symbol.FILLED.getName(), "&f&l" + "⬟");
+		setDefaultValue(regPath + Symbol.TRACKER.getName(), "&a&l" + " !!! ");
+		setDefaultValue(regPath + Symbol.WAYPOINT.getName(), "&c&l" + " !!! ");
 
 		setDefaultValue(hovPath + Symbol.NORTH.getName(), "&b&l" + "N");
 		setDefaultValue(hovPath + Symbol.NORTH_EAST.getName(), "&b&l" + "NE");
@@ -71,8 +72,9 @@ public class ConfigManager {
 		setDefaultValue(hovPath + Symbol.SOUTH_WEST.getName(), "&b&l" + "SW");
 		setDefaultValue(hovPath + Symbol.WEST.getName(), "&b&l" + "W");
 		setDefaultValue(hovPath + Symbol.NORTH_WEST.getName(), "&b&l" + "NW");
-		setDefaultValue(hovPath + Symbol.FILLED.getName(), "&b" + "⬟");
-		setDefaultValue(hovPath + Symbol.TRACKER.getName(), "&b&l" + "!!!");
+		setDefaultValue(hovPath + Symbol.FILLED.getName(), "&b&l" + "⬟");
+		setDefaultValue(hovPath + Symbol.TRACKER.getName(), "&b&l" + " !!! ");
+		setDefaultValue(hovPath + Symbol.WAYPOINT.getName(), "&b&l" + " !!! ");
 
 		setDefaultValue("symbol-start", "&e&l" + "≪─");
 		setDefaultValue("symbol-end", "&e&l" + "─≫");

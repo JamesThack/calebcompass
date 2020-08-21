@@ -13,6 +13,7 @@ public enum Symbol {
 
 	FILLED("filled"),
 	TRACKER("tracker"),
+	WAYPOINT("waypoint"),
 
 	;
 

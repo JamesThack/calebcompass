@@ -1,5 +1,5 @@
 name: CalebCompass
-version: 2.0
+version: 2.1
 main: calebcompass.calebcompass.CalebCompass
 api-version: 1.16
 description: CalebCompass

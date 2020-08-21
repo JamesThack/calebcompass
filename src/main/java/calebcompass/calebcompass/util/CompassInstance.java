@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.ArrayList;
 
+import calebcompass.calebcompass.SavePoints.SavePoint;
+import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import org.bukkit.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,6 +46,26 @@ public class CompassInstance {
 		activeBars.add(bar);
 	}
 
+	public void addSavePoint(UUID uuid, SavePoint point) {
+		CompassLocation add = getCompassLocation(uuid);
+		if (add == null) {
+			addCompassLocation(uuid, new Location(Bukkit.getWorld("NULL"), 0,0,0), new Location(Bukkit.getWorld("NULL"), 0,0,0));
+			add = getCompassLocation(uuid);
+			add.setTracking(false);
+		}
+		add.addActivePoint(point);
+	}
+
+	public void removeSavePoint(UUID uuid, SavePoint point) {
+		CompassLocation add = getCompassLocation(uuid);
+		if (add == null) {
+			addCompassLocation(uuid, new Location(Bukkit.getWorld("NULL"), 0,0,0), new Location(Bukkit.getWorld("NULL"), 0,0,0));
+			add = getCompassLocation(uuid);
+			add.setTracking(false);
+		}
+		add.removeActivePoint(point);
+	}
+
 	public void clearPlayer(Player player) {
 		BossBar bar = null;
 		for (BossBar current : activeBars) {
@@ -52,6 +74,10 @@ public class CompassInstance {
 			bar.setVisible(false);
 		}
 		if (bar != null) activeBars.remove(bar);
+	}
+
+	public FileConfiguration getCompassConfig() {
+		return compassConfig;
 	}
 
 	public void setPlayerVisible(Player player, boolean Tracking) {
@@ -160,6 +186,7 @@ public class CompassInstance {
 		if (!playerFile.exists()) CalebCompass.getInstance().saveResource("players.yml", false);
 		compassConfig = YamlConfiguration.loadConfiguration(playerFile);
 
+		SavePointConfig.getInstance().load();
 		if (compassConfig.getString("playerdata") == null) return;
 		for (String uuidStr : compassConfig.getConfigurationSection("playerdata").getKeys(false)) {
 			UUID uuid = UUID.fromString(uuidStr);
@@ -181,10 +208,25 @@ public class CompassInstance {
 					CompassLocation newLoc = new CompassLocation(uuid, origin, target);
 					if (compassConfig.isBoolean(curPath + "viewing")) newLoc.setShowing(compassConfig.getBoolean(curPath + "viewing"));
 					addCompassLocation(newLoc);
+					if (compassConfig.getConfigurationSection("playerdata." + uuid.toString() + ".activepoints") != null) {
+						for (String currentPoint : compassConfig.getConfigurationSection("playerdata." + uuid.toString() + ".activepoints").getKeys(false)) {
+							if (compassConfig.getBoolean("playerdata." + uuid.toString() + ".activepoints." + currentPoint)) {
+								SavePoint newPoint = SavePointConfig.getInstance().getPointFromName(currentPoint);
+								if (newPoint != null) this.addSavePoint(uuid, newPoint);
+							}
+						}
+					}
 					continue;
 				}
-
 				if (compassConfig.isBoolean(curPath + "viewing")) setPlayerVisible(uuid, compassConfig.getBoolean(curPath + "viewing"));
+				if (compassConfig.getConfigurationSection("playerdata." + uuid.toString() + ".activepoints") != null) {
+					for (String currentPoint : compassConfig.getConfigurationSection("playerdata." + uuid.toString() + ".activepoints").getKeys(false)) {
+						if (compassConfig.getBoolean("playerdata." + uuid.toString() + ".activepoints." + currentPoint)) {
+							SavePoint newPoint = SavePointConfig.getInstance().getPointFromName(currentPoint);
+							if (newPoint != null) this.addSavePoint(uuid, newPoint);
+						}
+					}
+				}
 			} catch (Exception e) {
 				CalebCompass.log("Error found in player data for player with uuid '" + uuid + "' - skipping");
 			}

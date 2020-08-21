@@ -2,6 +2,8 @@ package calebcompass.calebcompass;
 
 import java.util.logging.Level;
 
+import calebcompass.calebcompass.betonquest.Focus;
+import calebcompass.calebcompass.betonquest.TogglePoint;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +33,8 @@ public final class CalebCompass extends JavaPlugin {
 			log("Plugin hooked: BetonQuest");
 			BetonQuest.getInstance().registerEvents("compasstrack", TrackEvent.class);
 			BetonQuest.getInstance().registerEvents("clearcompass", CompassClear.class);
+			BetonQuest.getInstance().registerEvents("togglewaypoint", TogglePoint.class);
+			BetonQuest.getInstance().registerEvents("focuspoint", Focus.class);
 		}
 	}
 

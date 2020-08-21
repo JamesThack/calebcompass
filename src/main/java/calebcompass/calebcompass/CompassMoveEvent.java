@@ -1,5 +1,6 @@
 package calebcompass.calebcompass;
 
+import calebcompass.calebcompass.SavePoints.SavePoint;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -22,7 +23,7 @@ public class CompassMoveEvent implements Listener {
 
 		int yaw = Math.round((playerLoc.getYaw() + 360) / 9);
 		if (bar == null) {
-			bar = Bukkit.createBossBar(MessageUtil.getMessage(yaw, 365), Util.getBarColor(), Util.getBarStyle());
+			bar = Bukkit.createBossBar(MessageUtil.getMessage(yaw, 365, null, null), Util.getBarColor(), Util.getBarStyle());
 			bar.addPlayer(player);
 			CompassInstance.getInstance().addBar(bar);
 		}
@@ -31,7 +32,7 @@ public class CompassMoveEvent implements Listener {
 		bar.setColor(Util.getBarColor());
 		bar.setStyle(Util.getBarStyle());
 
-		if (location != null && location.isTracking()) {
+		if (location != null && location.isTracking() && location.getTarget().getWorld().equals(player.getWorld())) {
 			double dist = location.getOrigin().distanceSquared(location.getTarget());
 			double newDist = playerLoc.distanceSquared(location.getTarget());
 			if (newDist > dist) location.setOrigin(playerLoc);
@@ -41,7 +42,7 @@ public class CompassMoveEvent implements Listener {
 			bar.setProgress(1F - travel);
 
 			if (checkCoords(playerLoc, location.getTarget())) {
-				bar.setTitle(MessageUtil.getMessage(yaw, 500));
+				bar.setTitle(MessageUtil.getMessage(yaw, 500, location.getActivePoints(), player.getLocation()));
 				return;
 			}
 			// our target location (Point B)
@@ -49,11 +50,15 @@ public class CompassMoveEvent implements Listener {
 			// set the origin's direction to be the direction vector between point A and B.
 			playerLoc.setDirection(target.subtract(playerLoc.toVector()));
 			float playerYaw = playerLoc.getYaw();
-			bar.setTitle(MessageUtil.getMessage(yaw, Math.round(playerYaw / 9)));
+			bar.setTitle(MessageUtil.getMessage(yaw, Math.round(playerYaw / 9), location.getActivePoints(), playerLoc));
+			return;
+		} else if (location != null) {
+			bar.setTitle(MessageUtil.getMessage(yaw, 600, location.getActivePoints(), playerLoc));
+			bar.setProgress(1F);
 			return;
 		}
 
-		bar.setTitle(MessageUtil.getMessage(yaw, 500));
+		bar.setTitle(MessageUtil.getMessage(yaw, 500, null, null));
 		bar.setProgress(1F);
 	}
 

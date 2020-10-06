@@ -2,20 +2,17 @@ package calebcompass.calebcompass;
 
 import calebcompass.calebcompass.SavePoints.SavePoint;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
-import com.sun.corba.se.impl.io.TypeMismatchException;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.CommandExecutor;
-
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.CompassLocation;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.prefs.PreferenceChangeEvent;
 
 public class CalebCompassCommand implements CommandExecutor {
 
@@ -32,6 +29,7 @@ public class CalebCompassCommand implements CommandExecutor {
             sender.sendMessage("§4/calebcompass show§r Show the compass");
 			sender.sendMessage("§4/calebcompass save (name)§r Save a new waypoint for the compass");
 			sender.sendMessage("§4/calebcompass toggle (waypoint) (true/false)§r Toggle viewing a waypoint");
+			sender.sendMessage("§4/calebcompass focus§r Focus your quest marker on a specific waypoint");
             return true;
         }
 
@@ -134,6 +132,7 @@ public class CalebCompassCommand implements CommandExecutor {
 	        }
 
         	CalebCompass.getConfigManager().setup();
+        	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
         	sender.sendMessage(PREFIX + "Config has been loaded into the game");
         	return true;
@@ -203,25 +202,6 @@ public class CalebCompassCommand implements CommandExecutor {
 	        return true;
         }
 
-		// hide
-		if (args.length >= 2 && args[0].equalsIgnoreCase("hide")) {
-			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.hide.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
-				return true;
-			}
-
-			Player player = Bukkit.getPlayer(args[1]);
-			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found!");
-				return true;
-			}
-
-			CompassInstance.getInstance().setPlayerVisible(player, false);
-			sender.sendMessage(PREFIX + "Hid compass for player " + args[1]);
-			CompassInstance.getInstance().saveData();
-			return true;
-		}
-
 		// save point
 		if (args.length >= 2 && args[0].equalsIgnoreCase("save") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.save")) {
@@ -233,7 +213,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				sender.sendMessage(PREFIX + "A point with this name already exists");
 				return true;
 			}
-			SavePoint newSave = new SavePoint(((Player) sender).getLocation(), args[1], " §c!!! ");
+			SavePoint newSave = new SavePoint(((Player) sender).getLocation(), args[1], "&c&l !!! ", "&b&l !!! ");
 			newSave.savePoint();
 			sender.sendMessage(PREFIX + "Saved point");
 			SavePointConfig.getInstance().saveData();
@@ -331,43 +311,25 @@ public class CalebCompassCommand implements CommandExecutor {
 
 		// focus point
 		if (args.length == 1 && args[0].equalsIgnoreCase("focus") && sender instanceof Player) {
+
 			SavePointConfig.getInstance().load();
 			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");
 				return true;
 			}
-
 			Player player = (Player) sender;
-			Location playerLoc = player.getLocation();
-			int yaw = Math.round((playerLoc.getYaw() + 360) / 9);
 
-			if (yaw >= 40) yaw -=40;
-
-
-			if (CompassInstance.getInstance().getCompassLocation(player) == null) {
-				sender.sendMessage(PREFIX + "No point found");
+			SavePoint point = getSavePointAtLoc(player);
+			if (point == null)  {
+				player.sendMessage(PREFIX + "No point found, please look at a waypoint!");
 				return true;
 			}
 
-			ArrayList<SavePoint> extraPoints = CompassInstance.getInstance().getCompassLocation(player).getActivePoints();
-			for (SavePoint cur : extraPoints) {
-				if (!cur.getLoc1().getWorld().equals(player.getLocation().getWorld())) continue;
-				// our target location (Point B)
-				Vector target = cur.getLoc1().toVector();
-				// set the origin's direction to be the direction vector between point A and B.
-				playerLoc.setDirection(target.subtract(playerLoc.toVector()));
-				float playerYaw = playerLoc.getYaw();
-				int goDir2 = Math.round(playerYaw / 9);
-				if (goDir2 == yaw) {
-					CompassInstance.getInstance().getCompassLocation(player).setTarget(cur.getLoc1());
-					CompassInstance.getInstance().getCompassLocation(player).setOrigin(playerLoc);
-					CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
-					sender.sendMessage(PREFIX + "Changed focus");
-					CompassInstance.getInstance().saveData();
-					return true;
-				}
-			}
-			sender.sendMessage(PREFIX + "No point found to focus");
+			CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());
+			CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
+			CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
+			sender.sendMessage(PREFIX + "Changed focus");
+			CompassInstance.getInstance().saveData();
 			return true;
 		}
 
@@ -376,5 +338,30 @@ public class CalebCompassCommand implements CommandExecutor {
         sender.sendMessage(PREFIX + "Type '/calebcompass help' for more info");
         return true;
     }
+
+    public SavePoint getSavePointAtLoc(Player player) {
+		Location playerLoc = player.getLocation();
+		int yaw = Math.round((playerLoc.getYaw() + 360) / 9);
+
+		if (yaw >= 40) yaw -=40;
+
+
+		if (CompassInstance.getInstance().getCompassLocation(player) == null) {
+			return null;
+		}
+
+		ArrayList<SavePoint> extraPoints = CompassInstance.getInstance().getCompassLocation(player).getActivePoints();
+		for (SavePoint cur : extraPoints) {
+			if (!cur.getLoc1().getWorld().equals(player.getLocation().getWorld())) continue;
+			Vector target = cur.getLoc1().toVector();
+			playerLoc.setDirection(target.subtract(playerLoc.toVector()));
+			float playerYaw = playerLoc.getYaw();
+			int goDir2 = Math.round(playerYaw / 9);
+			if (goDir2 == yaw) {
+				return cur;
+			}
+		}
+		return null;
+	}
 
 }

@@ -1,10 +1,10 @@
 package calebcompass.calebcompass.util;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Util {
 
@@ -27,11 +27,11 @@ public class Util {
 	}
 
 	public static String getRegular(Symbol symbol) {
-		return MessageUtil.colorize(regular.get(symbol));
+		return MessageUtil.colourise(regular.get(symbol));
 	}
 
 	public static String getHovered(Symbol symbol) {
-		return MessageUtil.colorize(hovered.get(symbol));
+		return MessageUtil.colourise(hovered.get(symbol));
 	}
 
 	public static BarColor getBarColor() {
@@ -43,11 +43,11 @@ public class Util {
 	}
 
 	public static String getSymbolStart() {
-		return MessageUtil.colorize(symbolStart);
+		return MessageUtil.colourise(symbolStart);
 	}
 
 	public static String getSymbolEnd() {
-		return MessageUtil.colorize(symbolEnd);
+		return MessageUtil.colourise(symbolEnd);
 	}
 
 	public static void setBarColor(String string) {

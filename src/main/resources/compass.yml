@@ -9,7 +9,7 @@ regular:
   north-west: '&6&lNW'
   filled: '&f&l⬟'
   tracker: '&a&l !!! '
-  waypoint: '&c&l !!!'
+  waypoint: '&c&l !!! '
 
 hovered:
   north: '&b&lN'
@@ -22,10 +22,10 @@ hovered:
   north-west: '&b&lNW'
   filled: '&b&l⬟'
   tracker: '&b&l !!! '
-  waypoint: '&b&l !!!'
+  waypoint: '&b&l !!! '
 
 symbol-start: '&e&l≪─ '
 symbol-end: '&e&l ─≫'
 
-bar-color: purple
+bar-color: white
 bar-style: solid

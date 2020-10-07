@@ -1,20 +1,22 @@
 package calebcompass.calebcompass.SavePoints;
 
-import calebcompass.calebcompass.util.CompassInstance;
-import calebcompass.calebcompass.util.ConfigManager;
+import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.Location;
 
 public class SavePoint {
 
     private Location loc1;
     private String symbol;
+    private String symbolHov;
     private String name;
 
-    public SavePoint(Location loc1, String name,  String symbol) {
+    public SavePoint(Location loc1, String name,  String symbol, String hov) {
         this.loc1 = loc1;
-        this.symbol = "§c !!! ";
+        this.symbol = "&c&l !!! ";
+        this.symbolHov = "&b&l !!! ";
         this.name = name;
         if (symbol != null)this.symbol = symbol;
+        if (hov != null) this.symbolHov = hov;
     }
 
     public Location getLoc1() {
@@ -26,7 +28,11 @@ public class SavePoint {
     }
 
     public String getSymbol() {
-        return symbol;
+        return MessageUtil.colourise(symbol);
+    }
+
+    public String getSymbolHov() {
+        return MessageUtil.colourise(symbolHov);
     }
 
     public void savePoint() {

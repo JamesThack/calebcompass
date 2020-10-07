@@ -1,6 +1,5 @@
 package calebcompass.calebcompass.SavePoints;
 
-import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.util.CompassInstance;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -49,12 +48,6 @@ public class SavePointConfig {
     public void removeSave(SavePoint save) {
         this.currentPoints.remove(save);
         savePointConfig.set("points." + save.getName(), null);
-        if (CompassInstance.getInstance().getCompassConfig().getConfigurationSection("playerdata") == null) return;
-        for(String uuid : CompassInstance.getInstance().getCompassConfig().getConfigurationSection("playerdata").getKeys(false)) {
-            CompassInstance.getInstance().getCompassConfig().set("playerdata." + uuid + ".activepoints." + save.getName(), null);
-        }
-        serialiseValues();
-        CompassInstance.getInstance().load();
     }
 
     public SavePoint getPointFromName(String name) {
@@ -86,24 +79,35 @@ public class SavePointConfig {
             savePointConfig.set("points." + p.getName() + ".x", p.getLoc1().getBlockX());
             savePointConfig.set("points." + p.getName() + ".y", p.getLoc1().getBlockY());
             savePointConfig.set("points." + p.getName() + ".z", p.getLoc1().getBlockZ());
+            savePointConfig.set("points." + p.getName() + ".symbol_regular", p.getSymbol().replace("§", "&"));
+            savePointConfig.set("points." + p.getName() + ".symbol_hovered", p.getSymbolHov().replace("§", "&"));
         }
     }
 
     public void load() {
         this.currentPoints = new ArrayList<SavePoint>();
+        savePointConfig = YamlConfiguration.loadConfiguration(savePointFile);
         if (savePointConfig.getConfigurationSection("points") == null) return;
         for (String load : savePointConfig.getConfigurationSection("points").getKeys(false)) {
             try {
                 String curLoad = "points." + load +  ".";
+                if (savePointConfig.getString(curLoad + "symbol_regular") == null) {
+                    savePointConfig.set(curLoad + "symbol_regular" ,"&c&l !!! ");
+                }
+                if (savePointConfig.getString(curLoad + "symbol_hovered") == null) savePointConfig.set(curLoad + "symbol_hovered" ,"&b&l !!! ");
                 SavePoint point = new SavePoint(new Location(Bukkit.getWorld(savePointConfig.getString(curLoad + "world")),
                         Integer.valueOf(savePointConfig.getString(curLoad + "x")),
                         Integer.valueOf(savePointConfig.getString(curLoad + "y")),
-                        Integer.valueOf(savePointConfig.getString(curLoad + "z"))), load, "NULL");
+                        Integer.valueOf(savePointConfig.getString(curLoad + "z"))),
+                        load,
+                        savePointConfig.getString(curLoad + "symbol_regular"),
+                        savePointConfig.getString(curLoad + "symbol_hovered"));
                 this.currentPoints.add(point);
             } catch (Exception e) {
 
             }
         }
+        saveData();
     }
 
     public void saveData() {

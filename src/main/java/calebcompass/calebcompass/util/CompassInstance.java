@@ -1,21 +1,20 @@
 package calebcompass.calebcompass.util;
 
-import java.io.File;
-import java.util.List;
-import java.util.UUID;
-import java.util.ArrayList;
-
+import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.SavePoints.SavePoint;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
-import org.bukkit.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
-import calebcompass.calebcompass.CalebCompass;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CompassInstance {
 
@@ -227,9 +226,7 @@ public class CompassInstance {
 						}
 					}
 				}
-			} catch (Exception e) {
-				CalebCompass.log("Error found in player data for player with uuid '" + uuid + "' - skipping");
-			}
+			} catch (Exception e) {			}
 		}
 	}
 
@@ -238,7 +235,8 @@ public class CompassInstance {
 	}
 
 	public static boolean hasPerm(Player player, String perm) {
-		return (player.isOp() || player.hasPermission("calebcompass." + perm));
+		if (player.isOp()) return true;
+		return (player.hasPermission("calebcompass." + perm));
 	}
 
 }

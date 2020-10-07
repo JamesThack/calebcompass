@@ -142,7 +142,7 @@ public class CompassConstructor {
                     cachedInputs.add(Util.getRegular(Symbol.WAYPOINT));
                     continue;
                 }
-                if (startLoc == curLocation) {
+                if (startLoc == curLocation || (startLoc == 0 && curLocation == 40)) {
                     cachedInputs.add(point.getSymbolHov());
                     continue;
                 }

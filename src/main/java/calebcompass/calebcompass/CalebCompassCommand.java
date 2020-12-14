@@ -231,7 +231,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				sender.sendMessage(PREFIX + "A point with this name already exists");
 				return true;
 			}
-			SavePoint newSave = new SavePoint(((Player) sender).getLocation(), args[1], "&c&l !!! ", "&b&l !!! ");
+			SavePoint newSave = new SavePoint(((Player) sender).getLocation(), args[1], CalebCompass.getConfigManager().getString("regular.waypoint"), CalebCompass.getConfigManager().getString("hovered.waypoint"));
 			newSave.savePoint();
 			sender.sendMessage(PREFIX + "Saved point");
 			SavePointConfig.getInstance().saveData();

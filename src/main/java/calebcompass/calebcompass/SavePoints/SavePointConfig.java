@@ -1,5 +1,6 @@
 package calebcompass.calebcompass.SavePoints;
 
+import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.util.CompassInstance;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -92,9 +93,9 @@ public class SavePointConfig {
             try {
                 String curLoad = "points." + load +  ".";
                 if (savePointConfig.getString(curLoad + "symbol_regular") == null) {
-                    savePointConfig.set(curLoad + "symbol_regular" ,"&c&l !!! ");
+                    savePointConfig.set(curLoad + "symbol_regular" ,CalebCompass.getConfigManager().getString("regular.waypoint"));
                 }
-                if (savePointConfig.getString(curLoad + "symbol_hovered") == null) savePointConfig.set(curLoad + "symbol_hovered" ,"&b&l !!! ");
+                if (savePointConfig.getString(curLoad + "symbol_hovered") == null) savePointConfig.set(curLoad + "symbol_hovered" ,CalebCompass.getConfigManager().getString("hovered.waypoint"));
                 SavePoint point = new SavePoint(new Location(Bukkit.getWorld(savePointConfig.getString(curLoad + "world")),
                         Integer.valueOf(savePointConfig.getString(curLoad + "x")),
                         Integer.valueOf(savePointConfig.getString(curLoad + "y")),

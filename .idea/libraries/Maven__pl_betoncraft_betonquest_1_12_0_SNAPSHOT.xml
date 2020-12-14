@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: pl.betoncraft:betonquest:1.12.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/pl/betoncraft/betonquest/1.12.0-SNAPSHOT/betonquest-1.12.0-20201213.181529-208.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/pl/betoncraft/betonquest/1.12.0-SNAPSHOT/betonquest-1.12.0-20201213.181529-208-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/pl/betoncraft/betonquest/1.12.0-SNAPSHOT/betonquest-1.12.0-20201213.181529-208-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

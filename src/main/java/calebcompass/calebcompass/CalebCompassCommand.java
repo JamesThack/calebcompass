@@ -151,13 +151,6 @@ public class CalebCompassCommand implements CommandExecutor {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");
 				return true;
 			}
-
-			CalebCompass.getConfigManager().setup();
-			SavePointConfig.getInstance().load();
-			CompassInstance.getInstance().load();
-			sender.sendMessage(PREFIX + "Config has been loaded into the game");
-			return true;
-		}
         	CalebCompass.getConfigManager().setup();
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
@@ -168,6 +161,7 @@ public class CalebCompassCommand implements CommandExecutor {
         }
 
 		// hide
+
 		if (args.length == 1 && args[0].equalsIgnoreCase("hide") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "view.hide.self")) {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");

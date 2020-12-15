@@ -1,5 +1,6 @@
 package calebcompass.calebcompass.SavePoints;
 
+import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.Location;
 
@@ -14,8 +15,8 @@ public class SavePoint {
 
     public SavePoint(Location loc1, String name,  String symbol, String hov) {
         this.loc1 = loc1;
-        this.symbol = "&c&l !!! ";
-        this.symbolHov = "&b&l !!! ";
+        this.symbol = CalebCompass.getConfigManager().getString("regular.waypoint");
+        this.symbolHov = CalebCompass.getConfigManager().getString("hovered.waypoint");
         this.name = name;
         if (symbol != null)this.symbol = symbol;
         if (hov != null) this.symbolHov = hov;

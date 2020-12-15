@@ -8,7 +8,7 @@ regular:
   west: '&e&lW'
   north-west: '&6&lNW'
   waypoint: '&c&l !!! '
-  filled: '&f&l⬟'
+  filled: '&#ffffff&l⬟'
   tracker: '&c&l !!! '
 
 hovered:

@@ -52,7 +52,7 @@ public class CompassInstance {
 			add = getCompassLocation(uuid);
 			add.setTracking(false);
 		}
-		add.addActivePoint(point);
+		if(!add.getActivePoints().contains(point))  add.addActivePoint(point);
 	}
 
 	public void removeSavePoint(UUID uuid, SavePoint point) {

@@ -1,11 +1,10 @@
 package calebcompass.calebcompass.util;
 
-import java.io.File;
-
 import calebcompass.calebcompass.CalebCompass;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 
 public class ConfigManager {
 

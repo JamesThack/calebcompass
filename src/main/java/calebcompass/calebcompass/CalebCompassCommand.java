@@ -1,7 +1,10 @@
 package calebcompass.calebcompass;
 
+import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.SavePoints.SavePoint;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
+import calebcompass.calebcompass.citizens.CitizensInstance;
+import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.CompassLocation;
 import org.bukkit.Bukkit;
@@ -19,6 +22,7 @@ public class CalebCompassCommand implements CommandExecutor {
 	private final static String PREFIX = "§7[§eCaleb Compass§7]§r: ";
 
     @Override
+
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// help
         if ((args.length == 1 || (args.length >=1 && args[1].equals("1"))) && args[0].equalsIgnoreCase("help")) {
@@ -152,6 +156,8 @@ public class CalebCompassCommand implements CommandExecutor {
         	CalebCompass.getConfigManager().setup();
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
+        	if (MythicInstance.isPluginInstalled) MythicInstance.getInstance().load();
+        	if (CitizensInstance.isPluginInstalled) CitizensInstance.getInstance().load();
         	sender.sendMessage(PREFIX + "Config has been loaded into the game");
         	return true;
         }
@@ -367,7 +373,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				for (int i = 0; i < 5; i++) {
 					try {
 						SavePoint currentPoint = loc.getActivePoints().get(i);
-						if (currentPoint != null) sender.sendMessage("§e" + currentPoint.getName() + " §eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
+						if (currentPoint != null) sender.sendMessage("§7§l" + currentPoint.getName() + " §r§eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
 					} catch(Exception e) { }
 				}
 				return true;
@@ -381,7 +387,7 @@ public class CalebCompassCommand implements CommandExecutor {
 					for (int i = (page * 5) - 5; i < (page * 5); i++) {
 						try {
 							SavePoint currentPoint = loc.getActivePoints().get(i);
-							if (currentPoint != null) sender.sendMessage("§e" + currentPoint.getName() + " §eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
+							if (currentPoint != null) sender.sendMessage("§7§l" + currentPoint.getName() + " §r§eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
 						} catch(Exception e) { }
 					}
 					return true;

@@ -18,23 +18,23 @@ public class CalebCompassCommand implements CommandExecutor {
 
 	private final static String PREFIX = "§7[§eCaleb Compass§7]§r: ";
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// help
-        if ((args.length == 1 || (args.length >=1 && args[1].equals("1"))) && args[0].equalsIgnoreCase("help")) {
-            sender.sendMessage(PREFIX + "Commands, page 1/2:");
-            sender.sendMessage("§4/calebcompass track O:(player) x y z§r Track a set of coordinates on the compass");
-            sender.sendMessage("§4/calebcompass clear O:(player)§r Clear current track");
-            sender.sendMessage("§4/calebcompass hide O:(player)§r Hide the compass");
-            sender.sendMessage("§4/calebcompass show O:§(player)§r Show the compass");
+		if ((args.length == 1 || (args.length >=1 && args[1].equals("1"))) && args[0].equalsIgnoreCase("help")) {
+			sender.sendMessage(PREFIX + "Commands, page 1/2:");
+			sender.sendMessage("§4/calebcompass track O:(player) x y z§r Track a set of coordinates on the compass");
+			sender.sendMessage("§4/calebcompass clear O:(player)§r Clear current track");
+			sender.sendMessage("§4/calebcompass hide O:(player)§r Hide the compass");
+			sender.sendMessage("§4/calebcompass show O:§(player)§r Show the compass");
 			sender.sendMessage("§4/calebcompass save (name)§r Save a new waypoint for the compass");
 			sender.sendMessage("§4Any arguments marked with O: are optional");
-            return true;
-        }
+			return true;
+		}
 
-        if (args.length >=1 && args[0].equalsIgnoreCase("help")) {
-        	try {
-        		switch (Integer.parseInt(args[1])) {
+		if (args.length >=1 && args[0].equalsIgnoreCase("help")) {
+			try {
+				switch (Integer.parseInt(args[1])) {
 					case(2):
 						sender.sendMessage(PREFIX + "Commands, page 2/2");
 						sender.sendMessage("§4/calebcompass remove (waypoint)§r Remove a waypoint");
@@ -46,179 +46,179 @@ public class CalebCompassCommand implements CommandExecutor {
 				}
 			} catch (Exception e) {
 			}
-        	sender.sendMessage(PREFIX + "Page not found, try /calebcompass help");
-        	return true;
+			sender.sendMessage(PREFIX + "Page not found, try /calebcompass help");
+			return true;
 		}
 
-        // track
-        if (args.length == 4 && args[0].equalsIgnoreCase("track")) {
-            if (!(sender instanceof Player)) {
-	            sender.sendMessage(PREFIX + "You must be a player to use this command, use /calebcompass track (player) x y z:");
-	            return true;
-            }
+		// track
+		if (args.length == 4 && args[0].equalsIgnoreCase("track")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(PREFIX + "You must be a player to use this command, use /calebcompass track (player) x y z:");
+				return true;
+			}
 
-            Player player = (Player) sender;
-            if (!CompassInstance.hasPerm((Player) sender, "track.add.self")) {
-	            sender.sendMessage(PREFIX + "You do not have permission for this command!");
-	            return true;
-            }
+			Player player = (Player) sender;
+			if (!CompassInstance.hasPerm((Player) sender, "track.add.self")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
 
-            try {
-	            CompassLocation location = CompassInstance.getInstance().getCompassLocation(player);
-            	if (location == null) CompassInstance.getInstance().addCompassLocation(player, player.getLocation(), new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[3]), Integer.parseInt(args[3])));
-	            location = CompassInstance.getInstance().getCompassLocation(player);
+			try {
+				CompassLocation location = CompassInstance.getInstance().getCompassLocation(player);
+				if (location == null) CompassInstance.getInstance().addCompassLocation(player, player.getLocation(), new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[3]), Integer.parseInt(args[3])));
+				location = CompassInstance.getInstance().getCompassLocation(player);
 
-	            location.setOrigin(player.getLocation());
-	            location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[1]) + 0.5, Double.parseDouble(args[2]), Double.parseDouble(args[3]) + 0.5));
-	            location.setTracking(true);
-            	CompassInstance.getInstance().saveData();
-            	sender.sendMessage(PREFIX + "Successfully added track point");
-            	return true;
-            } catch (Exception e) {
-            	return true;
-            }
-        }
+				location.setOrigin(player.getLocation());
+				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[1]) + 0.5, Double.parseDouble(args[2]), Double.parseDouble(args[3]) + 0.5));
+				location.setTracking(true);
+				CompassInstance.getInstance().saveData();
+				sender.sendMessage(PREFIX + "Successfully added track point");
+				return true;
+			} catch (Exception e) {
+				return true;
+			}
+		}
 
-        // track
-        if (args.length >= 5 && args[0].equalsIgnoreCase("track")) {
-        	Player player = Bukkit.getPlayer(args[1]);
-        	if (player == null) {
-        		sender.sendMessage(PREFIX + "Player not found!");
-        		return true;
-        	}
+		// track
+		if (args.length >= 5 && args[0].equalsIgnoreCase("track")) {
+			Player player = Bukkit.getPlayer(args[1]);
+			if (player == null) {
+				sender.sendMessage(PREFIX + "Player not found!");
+				return true;
+			}
 
-        	if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.add.other")) {
-        		sender.sendMessage(PREFIX + "You do not have permission for this command!");
-        		return true;
-        	}
+			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.add.other")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-	        try {
-		        CompassLocation location = CompassInstance.getInstance().getCompassLocation(player);
-		        if (location == null) CompassInstance.getInstance().addCompassLocation(player, player.getLocation(), new Location(player.getWorld(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])));
-		        location = CompassInstance.getInstance().getCompassLocation(player);
+			try {
+				CompassLocation location = CompassInstance.getInstance().getCompassLocation(player);
+				if (location == null) CompassInstance.getInstance().addCompassLocation(player, player.getLocation(), new Location(player.getWorld(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])));
+				location = CompassInstance.getInstance().getCompassLocation(player);
 
-		        location.setOrigin(player.getLocation());
-		        location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[2]) + 0.5, Double.parseDouble(args[3]), Double.parseDouble(args[4]) + 0.5));
-		        location.setTracking(true);
-		        CompassInstance.getInstance().saveData();
-		        sender.sendMessage(PREFIX + "Successfully added track point for the player " + player.getDisplayName());
-		        return true;
-	        } catch (Exception e) {
-	        	return true;
-	        }
-        }
+				location.setOrigin(player.getLocation());
+				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[2]) + 0.5, Double.parseDouble(args[3]), Double.parseDouble(args[4]) + 0.5));
+				location.setTracking(true);
+				CompassInstance.getInstance().saveData();
+				sender.sendMessage(PREFIX + "Successfully added track point for the player " + player.getDisplayName());
+				return true;
+			} catch (Exception e) {
+				return true;
+			}
+		}
 
-        // clear
-        if (args.length == 1 && args[0].equalsIgnoreCase("clear") && sender instanceof Player) {
-            Player player = (Player) sender;
-            if (!CompassInstance.hasPerm((Player) sender, "track.remove.self")) {
-	            sender.sendMessage(PREFIX + "You do not have permission for this command!");
-	            return true;
-            }
+		// clear
+		if (args.length == 1 && args[0].equalsIgnoreCase("clear") && sender instanceof Player) {
+			Player player = (Player) sender;
+			if (!CompassInstance.hasPerm((Player) sender, "track.remove.self")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-            if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
-            CompassInstance.getInstance().saveData();
-            sender.sendMessage(PREFIX + "Successfully removed track point");
-            return true;
-        }
+			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
+			CompassInstance.getInstance().saveData();
+			sender.sendMessage(PREFIX + "Successfully removed track point");
+			return true;
+		}
 
-        // clear
-        if (args.length >= 2 && args[0].equalsIgnoreCase("clear")) {
-	        Player player = Bukkit.getPlayer(args[1]);
-	        if (player == null) {
-		        sender.sendMessage(PREFIX + "Player not found");
-		        return true;
-	        }
+		// clear
+		if (args.length >= 2 && args[0].equalsIgnoreCase("clear")) {
+			Player player = Bukkit.getPlayer(args[1]);
+			if (player == null) {
+				sender.sendMessage(PREFIX + "Player not found");
+				return true;
+			}
 
-	        if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.remove.other")) {
-		        sender.sendMessage(PREFIX + "You do not have permission for this command!");
-		        return true;
-	        }
+			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.remove.other")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-	        if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
-	        CompassInstance.getInstance().saveData();
-	        sender.sendMessage(PREFIX + "You successfully cleared the track point for " + player.getDisplayName());
-	        return true;
-        }
+			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
+			CompassInstance.getInstance().saveData();
+			sender.sendMessage(PREFIX + "You successfully cleared the track point for " + player.getDisplayName());
+			return true;
+		}
 
-        // reload
-        if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-        	if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "reload")) {
-		        sender.sendMessage(PREFIX + "You do not have permission for this command!");
-		        return true;
-	        }
+		// reload
+		if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "reload")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-        	CalebCompass.getConfigManager().setup();
-        	SavePointConfig.getInstance().load();
-        	CompassInstance.getInstance().load();
-        	sender.sendMessage(PREFIX + "Config has been loaded into the game");
-        	return true;
-        }
+			CalebCompass.getConfigManager().setup();
+			SavePointConfig.getInstance().load();
+			CompassInstance.getInstance().load();
+			sender.sendMessage(PREFIX + "Config has been loaded into the game");
+			return true;
+		}
 
-        // hide
-        if (args.length == 1 && args[0].equalsIgnoreCase("hide") && sender instanceof Player) {
-            if (!CompassInstance.hasPerm((Player) sender, "view.hide.self")) {
-	            sender.sendMessage(PREFIX + "You do not have permission for this command!");
-	            return true;
-            }
+		// hide
+		if (args.length == 1 && args[0].equalsIgnoreCase("hide") && sender instanceof Player) {
+			if (!CompassInstance.hasPerm((Player) sender, "view.hide.self")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-            CompassInstance.getInstance().setPlayerVisible((Player) sender, false);
-            CompassInstance.getInstance().saveData();
-            sender.sendMessage(PREFIX + "Hid compass");
-            return true;
-        }
+			CompassInstance.getInstance().setPlayerVisible((Player) sender, false);
+			CompassInstance.getInstance().saveData();
+			sender.sendMessage(PREFIX + "Hid compass");
+			return true;
+		}
 
-	    // hide
-	    if (args.length >= 2 && args[0].equalsIgnoreCase("hide")) {
-		    if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.hide.other")) {
-			    sender.sendMessage(PREFIX + "You do not have permission for this command!");
-			    return true;
-		    }
+		// hide
+		if (args.length >= 2 && args[0].equalsIgnoreCase("hide")) {
+			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.hide.other")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-		    Player player = Bukkit.getPlayer(args[1]);
-		    if (player == null) {
-			    sender.sendMessage(PREFIX + "Player not found!");
-			    return true;
-		    }
+			Player player = Bukkit.getPlayer(args[1]);
+			if (player == null) {
+				sender.sendMessage(PREFIX + "Player not found!");
+				return true;
+			}
 
-		    CompassInstance.getInstance().setPlayerVisible(player, false);
-		    sender.sendMessage(PREFIX + "Hid compass for player " + args[1]);
-		    CompassInstance.getInstance().saveData();
-		    return true;
-	    }
+			CompassInstance.getInstance().setPlayerVisible(player, false);
+			sender.sendMessage(PREFIX + "Hid compass for player " + args[1]);
+			CompassInstance.getInstance().saveData();
+			return true;
+		}
 
-	    // show
-        if (args.length == 1 && args[0].equalsIgnoreCase("show") && sender instanceof Player) {
-            if (!CompassInstance.hasPerm((Player) sender, "view.show.self")) {
-	            sender.sendMessage(PREFIX + "You do not have permission for this command!");
-	            return true;
-            }
+		// show
+		if (args.length == 1 && args[0].equalsIgnoreCase("show") && sender instanceof Player) {
+			if (!CompassInstance.hasPerm((Player) sender, "view.show.self")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-            CompassInstance.getInstance().setPlayerVisible((Player) sender, true);
-            sender.sendMessage(PREFIX + "Showing compass");
-            CompassInstance.getInstance().saveData();
-            return true;
-        }
+			CompassInstance.getInstance().setPlayerVisible((Player) sender, true);
+			sender.sendMessage(PREFIX + "Showing compass");
+			CompassInstance.getInstance().saveData();
+			return true;
+		}
 
-        // show
-        if (args.length >= 2 && args[0].equalsIgnoreCase("show")) {
-	        if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.show.other")) {
-		        sender.sendMessage(PREFIX + "You do not have permission for this command!");
-		        return true;
-	        }
+		// show
+		if (args.length >= 2 && args[0].equalsIgnoreCase("show")) {
+			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.show.other")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
 
-	        Player player = Bukkit.getPlayer(args[1]);
-	        if (player == null) {
-		        sender.sendMessage(PREFIX + "Player not found!");
-		        return true;
-	        }
+			Player player = Bukkit.getPlayer(args[1]);
+			if (player == null) {
+				sender.sendMessage(PREFIX + "Player not found!");
+				return true;
+			}
 
-	        CompassInstance.getInstance().setPlayerVisible(Bukkit.getPlayer(args[1]), true);
-	        sender.sendMessage(PREFIX + "Showing compass for player " + args[1]);
-	        CompassInstance.getInstance().saveData();
-	        return true;
-        }
+			CompassInstance.getInstance().setPlayerVisible(Bukkit.getPlayer(args[1]), true);
+			sender.sendMessage(PREFIX + "Showing compass for player " + args[1]);
+			CompassInstance.getInstance().saveData();
+			return true;
+		}
 
 		// save point
 		if (args.length >= 2 && args[0].equalsIgnoreCase("save") && sender instanceof Player) {
@@ -354,6 +354,31 @@ public class CalebCompassCommand implements CommandExecutor {
 			return true;
 		}
 
+
+		// focus point namepoint
+		if (args.length == 2 && args[0].equalsIgnoreCase("focus") && sender instanceof Player) {
+
+			SavePointConfig.getInstance().load();
+			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
+				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				return true;
+			}
+			Player player = (Player) sender;
+
+			SavePoint point = getSavePointFromName(player, args[1]);
+			if (point == null) {
+				player.sendMessage(PREFIX + "No point found with this name!");
+				return true;
+			}
+
+			CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());
+			CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
+			CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
+			sender.sendMessage(PREFIX + "Changed focus");
+			CompassInstance.getInstance().saveData();
+			return true;
+		}
+
 		//list waypoints
 		if (args.length>=1 && args[0].equalsIgnoreCase("waypoints") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.list")) {
@@ -393,11 +418,11 @@ public class CalebCompassCommand implements CommandExecutor {
 
 
 
-        sender.sendMessage(PREFIX + "Type '/calebcompass help' for more info");
-        return true;
-    }
+		sender.sendMessage(PREFIX + "Type '/calebcompass help' for more info");
+		return true;
+	}
 
-    public SavePoint getSavePointAtLoc(Player player) {
+	public SavePoint getSavePointAtLoc(Player player) {
 		Location playerLoc = player.getLocation();
 		int yaw = Math.round((playerLoc.getYaw() + 360) / 9);
 
@@ -421,5 +446,15 @@ public class CalebCompassCommand implements CommandExecutor {
 		}
 		return null;
 	}
+
+
+	public SavePoint getSavePointFromName(Player player, String name) {
+		ArrayList<SavePoint> extraPoints = CompassInstance.getInstance().getCompassLocation(player).getActivePoints();
+		for (SavePoint cur : extraPoints) {
+			if (cur.getName().equalsIgnoreCase(name)) return cur;
+		}
+		return null;
+	}
+
 
 }

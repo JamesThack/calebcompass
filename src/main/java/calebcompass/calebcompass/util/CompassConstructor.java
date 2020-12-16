@@ -127,7 +127,6 @@ public class CompassConstructor {
     }
 
     private void cacheWaypointSymbols(String sr) {
-        cachedInputs = new ArrayList<>();
         for (int i = 0; i < sr.toCharArray().length; i++) {
             char current = sr.charAt(i);
             int curLocation = startLoc + i - 10;
@@ -166,6 +165,12 @@ public class CompassConstructor {
     public void updateCompass() {
         int yaw = Math.round((player.getLocation().getYaw() + 360) / 9);
         bar.setTitle(makeBasicCompass(yaw));
+        if (location == null || location.getActivePoints() == null) return;
+        ArrayList<SavePoint> newPoints = new ArrayList<>();
+        for (SavePoint cur : location.getActivePoints()) {
+            if (!cur.isMythic() && !cur.isNPC()) newPoints.add(cur);
+        }
+        location.setActivePoints(newPoints);
     }
 
     private void updateTrackingDistance() {
@@ -201,6 +206,12 @@ public class CompassConstructor {
             if(goDir2 == dir) return cur;
         }
         return null;
+    }
+
+    //All methods below here are external plugin integrations
+
+    private String addMythicPoints(String string) {
+        return string;
     }
 
 

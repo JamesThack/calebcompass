@@ -1,11 +1,11 @@
 package calebcompass.calebcompass.util;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import calebcompass.calebcompass.SavePoints.SavePoint;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class CompassLocation {
 
@@ -86,5 +86,9 @@ public class CompassLocation {
 
 	public void removeActivePoint(SavePoint lePoint) {
 		this.activePoints.remove(lePoint);
+	}
+
+	public void setActivePoints(ArrayList<SavePoint> activePoints) {
+		this.activePoints = activePoints;
 	}
 }

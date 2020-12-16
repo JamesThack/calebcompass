@@ -10,6 +10,8 @@ public class SavePoint {
     private String symbol;
     private String symbolHov;
     private String name;
+    private boolean isMythic;
+    private boolean isNPC;
 
     public SavePoint(Location loc1, String name,  String symbol, String hov) {
         this.loc1 = loc1;
@@ -18,6 +20,23 @@ public class SavePoint {
         this.name = name;
         if (symbol != null)this.symbol = symbol;
         if (hov != null) this.symbolHov = hov;
+        isMythic = false;
+    }
+
+    public boolean isMythic() {
+        return isMythic;
+    }
+
+    public void setMythic(boolean mythic) {
+        isMythic = mythic;
+    }
+
+    public boolean isNPC() {
+        return isNPC;
+    }
+
+    public void setNPC(boolean NPC) {
+        isNPC = NPC;
     }
 
     public Location getLoc1() {

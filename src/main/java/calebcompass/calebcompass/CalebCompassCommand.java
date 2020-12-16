@@ -371,6 +371,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				return true;
 			}
 
+
 			CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());
 			CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
 			CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
@@ -449,6 +450,19 @@ public class CalebCompassCommand implements CommandExecutor {
 
 
 	public SavePoint getSavePointFromName(Player player, String name) {
+
+	    // check if the point exist and toggle it to true to player before focus it
+        if (CompassInstance.getInstance().getCompassConfig().getConfigurationSection("playerdata." + player.getUniqueId().toString() + ".activepoints") != null) {
+                if(CompassInstance.getInstance().getCompassConfig().getConfigurationSection("playerdata." + player.getUniqueId().toString() + ".activepoints").contains(name)) { // check if player has the point into his list
+                    SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), name, true); // toggle the waypoint to true
+                    CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(name)); // save it
+                    CompassInstance.getInstance().saveData();
+                    SavePointConfig.getInstance().saveData();
+                    CompassInstance.getInstance().load();
+                }
+        }
+        else return null;
+
 		ArrayList<SavePoint> extraPoints = CompassInstance.getInstance().getCompassLocation(player).getActivePoints();
 		for (SavePoint cur : extraPoints) {
 			if (cur.getName().equalsIgnoreCase(name)) return cur;

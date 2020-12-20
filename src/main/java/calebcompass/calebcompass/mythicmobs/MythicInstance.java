@@ -93,7 +93,6 @@ public class MythicInstance {
     }
 
     private void setDefaultValue(String loc, int va) {
-        System.out.println(config.getInt(loc));
         if (config.getInt(loc) >0 ) return;
         config.set(loc, va);
     }

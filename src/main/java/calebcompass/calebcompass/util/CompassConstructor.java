@@ -167,7 +167,7 @@ public class CompassConstructor {
         bar.setTitle(makeBasicCompass(yaw));
         if (location == null || location.getActivePoints() == null) return;
         ArrayList<SavePoint> newPoints = new ArrayList<>();
-        for (SavePoint cur : location.getActivePoints()) {
+        for (SavePoint cur : location.getTrueActivePoints()) {
             if (!cur.isMythic() && !cur.isNPC()) newPoints.add(cur);
         }
         location.setActivePoints(newPoints);

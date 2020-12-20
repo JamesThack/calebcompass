@@ -49,7 +49,6 @@ public class CitizensInstance {
         loadRegularOverrides();
         loadHoveredOverrides();
 
-        System.out.println(config.getString("default-settings.default-symbol-regular"));
         maxRange = config.getInt("default-settings.npc-detection-range");
         defaultMobShow = config.getBoolean("default-settings.show-all-npcs-by-default");
         defaultRegular = config.getString("default-settings.default-symbol-regular");
@@ -67,7 +66,6 @@ public class CitizensInstance {
         if (config.getConfigurationSection("custom-overrides.regular") == null) return;
         for (String str : config.getConfigurationSection("custom-overrides.regular").getKeys(false)) {
             String curPath = "custom-overrides.regular." + str;
-            System.out.println("Mythic" + str);
             regularOverrides.add(new String[]{str, config.getString(curPath)});
         }
     }
@@ -77,12 +75,10 @@ public class CitizensInstance {
         if (config.getConfigurationSection("custom-overrides.hovered") == null) return;
         for (String str : config.getConfigurationSection("custom-overrides.hovered").getKeys(false)) {
             String curPath = "custom-overrides.hovered." + str;
-            System.out.println(str);
             hoveredOverride.add(new String[]{str, config.getString(curPath)});
         }
     }
     private void setupDefaults() {
-        System.out.println("SETTING UP DEFAULTS");
         String curPath = "default-settings.";
         setDefaultValue(curPath + "show-all-npcs-by-default", false);
         setDefaultValue(curPath + "default-symbol-regular", "&4&l !! ");
@@ -98,7 +94,6 @@ public class CitizensInstance {
     }
 
     private void setDefaultValue(String loc, int va) {
-        System.out.println(config.getInt(loc));
         if (config.getInt(loc) >0 ) return;
         config.set(loc, va);
     }
@@ -120,7 +115,6 @@ public class CitizensInstance {
         for (String[] cur : regularOverrides) {
             if (cur[0].equals(mythicMob)) return cur[1];
         }
-        System.out.println(defaultRegular);
         return defaultRegular;
     }
 

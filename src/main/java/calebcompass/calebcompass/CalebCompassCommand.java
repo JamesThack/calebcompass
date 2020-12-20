@@ -427,7 +427,7 @@ public class CalebCompassCommand implements CommandExecutor {
 		return true;
 	}
 
-	public SavePoint getSavePointAtLoc(Player player) {
+	public static SavePoint getSavePointAtLoc(Player player) {
 		Location playerLoc = player.getLocation();
 		int yaw = Math.round((playerLoc.getYaw() + 360) / 9);
 

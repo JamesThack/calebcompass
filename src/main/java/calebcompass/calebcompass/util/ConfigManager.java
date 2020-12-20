@@ -85,7 +85,7 @@ public class ConfigManager {
 		setDefaultValue(regPath + Symbol.NORTH_WEST.getName(), "&6&l" + "NW");
 		setDefaultValue(regPath + Symbol.TRACKER.getName(), "&a&l" + " !!! ");
 		setDefaultValue(regPath + Symbol.WAYPOINT.getName(), "&c&l" + " !!! ");
-		setDefaultValue(regPath + Symbol.FILLED.getName(), "&f" + "⬟");
+		setDefaultValue(regPath + Symbol.FILLED.getName(), "&#ffffff&l" + "⬟");
 
 		setDefaultValue(hovPath + Symbol.NORTH.getName(), "&b&l" + "N");
 		setDefaultValue(hovPath + Symbol.NORTH_EAST.getName(), "&b&l" + "NE");

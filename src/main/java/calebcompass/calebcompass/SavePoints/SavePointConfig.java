@@ -46,6 +46,14 @@ public class SavePointConfig {
         this.currentPoints.add(newP);
     }
 
+    public ArrayList<SavePoint> getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(ArrayList<SavePoint> currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
     public void removeSave(SavePoint save) {
         this.currentPoints.remove(save);
         savePointConfig.set("points." + save.getName(), null);
@@ -82,6 +90,8 @@ public class SavePointConfig {
             savePointConfig.set("points." + p.getName() + ".z", p.getLoc1().getBlockZ());
             savePointConfig.set("points." + p.getName() + ".symbol_regular", p.getSymbol().replace("§", "&"));
             savePointConfig.set("points." + p.getName() + ".symbol_hovered", p.getSymbolHov().replace("§", "&"));
+            savePointConfig.set("points." + p.getName() + ".global", p.isGlobal());
+            savePointConfig.set("points." + p.getName() + ".range", p.getMaxRange());
         }
     }
 
@@ -103,9 +113,10 @@ public class SavePointConfig {
                         load,
                         savePointConfig.getString(curLoad + "symbol_regular"),
                         savePointConfig.getString(curLoad + "symbol_hovered"));
+                if (savePointConfig.isBoolean(curLoad + "global")) point.setGlobal(savePointConfig.getBoolean(curLoad + "global"));
+                if(savePointConfig.isInt(curLoad + "range")) point.setMaxRange(savePointConfig.getInt(curLoad + "range"));
                 this.currentPoints.add(point);
             } catch (Exception e) {
-
             }
         }
         saveData();

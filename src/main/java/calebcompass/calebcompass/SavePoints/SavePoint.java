@@ -12,6 +12,8 @@ public class SavePoint {
     private String name;
     private boolean isMythic;
     private boolean isNPC;
+    private boolean isGlobal;
+    private int maxRange;
 
     public SavePoint(Location loc1, String name,  String symbol, String hov) {
         this.loc1 = loc1;
@@ -21,6 +23,25 @@ public class SavePoint {
         if (symbol != null)this.symbol = symbol;
         if (hov != null) this.symbolHov = hov;
         isMythic = false;
+        isNPC = false;
+        isGlobal = false;
+        maxRange = 0;
+    }
+
+    public int getMaxRange() {
+        return maxRange;
+    }
+
+    public void setMaxRange(int maxRange) {
+        this.maxRange = maxRange;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
+    }
+
+    public void setGlobal(boolean global) {
+        isGlobal = global;
     }
 
     public boolean isMythic() {

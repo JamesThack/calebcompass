@@ -6,6 +6,7 @@ import calebcompass.calebcompass.betonquest.TogglePoint;
 import calebcompass.calebcompass.betonquest.TrackEvent;
 import calebcompass.calebcompass.citizens.CitizensEvents;
 import calebcompass.calebcompass.citizens.CitizensInstance;
+import calebcompass.calebcompass.miscevents.ItemFocus;
 import calebcompass.calebcompass.mythicmobs.MythicEvents;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
@@ -26,10 +27,12 @@ public final class CalebCompass extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 
-		configManager = new ConfigManager(instance);
+		configManager = ConfigManager.getInstance();
 
 		CompassMoveEvent moveEvent = new CompassMoveEvent();
 		moveEvent.runTaskTimer(this, 0, 1);
+
+		getServer().getPluginManager().registerEvents(new ItemFocus(), this);
 
 		getServer().getPluginCommand("calebcompass").setExecutor(new CalebCompassCommand());
 

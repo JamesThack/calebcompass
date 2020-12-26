@@ -66,9 +66,7 @@ public class ConfigManager {
 
 		bannedWorlds = new ArrayList<>();
 		for (String cur : compassConfig.getConfigurationSection("banned-worlds").getKeys(false)) {
-			if (compassConfig.getBoolean("banned-worlds." + cur)) {
-				bannedWorlds.add(cur);
-			}
+			if (compassConfig.getBoolean("banned-worlds." + cur)) 	bannedWorlds.add(cur);
 		}
 	}
 

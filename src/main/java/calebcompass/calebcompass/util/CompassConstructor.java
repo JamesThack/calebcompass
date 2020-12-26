@@ -33,7 +33,7 @@ public class CompassConstructor {
         updateTrackingDistance();
         bar.setColor(Util.getBarColor());
 		bar.setStyle(Util.getBarStyle());
-        if(this.location != null) bar.setVisible(location.isShowing());
+        if(this.location != null) bar.setVisible(location.isShowing() && !ConfigManager.getInstance().isWorldBanned(player.getWorld().getName()));
     }
 
     public static String replaceHovered(String insert) {

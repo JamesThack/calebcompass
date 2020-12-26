@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ConfigManager {
 
@@ -21,6 +22,8 @@ public class ConfigManager {
 	private static ConfigManager instance;
 
 	private Material focusItem;
+
+	private ArrayList<String> bannedWorlds;
 
 	public static ConfigManager getInstance() {
 		if (instance == null) instance = new ConfigManager();
@@ -60,11 +63,22 @@ public class ConfigManager {
 			System.out.println("Error, item " + compassConfig.getString("focus-item") + " is not recognised! Use NOITEM if you want this feature disabled");
 			focusItem = null;
 		}
+
+		bannedWorlds = new ArrayList<>();
+		for (String cur : compassConfig.getConfigurationSection("banned-worlds").getKeys(false)) {
+			if (compassConfig.getBoolean("banned-worlds." + cur)) {
+				bannedWorlds.add(cur);
+			}
+		}
 	}
 
 	private void setupValues(Symbol symbol) {
 		Util.getRegular().put(symbol, getString("regular." + symbol.getName()));
 		Util.getHovered().put(symbol, getString("hovered." + symbol.getName()));
+	}
+
+	public boolean isWorldBanned(String world) {
+		return bannedWorlds.contains(world);
 	}
 
 	public String getString(String path) {
@@ -107,12 +121,22 @@ public class ConfigManager {
 
 		setDefaultValue("focus-item", "NOITEM");
 
+		setDefaultValues("banned-worlds", new String[]{"world","world_nether","world_the_end"});
+
 		save();
 	}
 
 	private void setDefaultValue(String path, String value) {
 		if (compassConfig.getString(path) != null) return;
 		compassConfig.set(path, value);
+	}
+
+	private void setDefaultValues(String path, String[] values) {
+		if (compassConfig.getString(path )!= null) return;
+		for (String str : values) {
+			compassConfig.set(path + "." + str, false);
+		}
+
 	}
 
 	public Material getFocusItem() {

@@ -1,18 +1,21 @@
 package calebcompass.calebcompass;
 
-import java.util.logging.Level;
-
+import calebcompass.calebcompass.betonquest.CompassClear;
 import calebcompass.calebcompass.betonquest.Focus;
 import calebcompass.calebcompass.betonquest.TogglePoint;
+import calebcompass.calebcompass.betonquest.TrackEvent;
+import calebcompass.calebcompass.citizens.CitizensEvents;
+import calebcompass.calebcompass.citizens.CitizensInstance;
+import calebcompass.calebcompass.miscevents.ItemFocus;
+import calebcompass.calebcompass.mythicmobs.MythicEvents;
+import calebcompass.calebcompass.mythicmobs.MythicInstance;
+import calebcompass.calebcompass.util.CompassInstance;
+import calebcompass.calebcompass.util.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import pl.betoncraft.betonquest.BetonQuest;
 
-import calebcompass.calebcompass.util.ConfigManager;
-import calebcompass.calebcompass.util.CompassInstance;
-import calebcompass.calebcompass.betonquest.TrackEvent;
-import calebcompass.calebcompass.betonquest.CompassClear;
+import java.util.logging.Level;
 
 public final class CalebCompass extends JavaPlugin {
 
@@ -24,9 +27,13 @@ public final class CalebCompass extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 
-		configManager = new ConfigManager(instance);
+		configManager = ConfigManager.getInstance();
 
-		getServer().getPluginManager().registerEvents(new CompassMoveEvent(), this);
+		CompassMoveEvent moveEvent = new CompassMoveEvent();
+		moveEvent.runTaskTimer(this, 0, 1);
+
+		getServer().getPluginManager().registerEvents(new ItemFocus(), this);
+
 		getServer().getPluginCommand("calebcompass").setExecutor(new CalebCompassCommand());
 
 		if (Bukkit.getPluginManager().getPlugin("BetonQuest") != null) {
@@ -35,6 +42,20 @@ public final class CalebCompass extends JavaPlugin {
 			BetonQuest.getInstance().registerEvents("clearcompass", CompassClear.class);
 			BetonQuest.getInstance().registerEvents("togglewaypoint", TogglePoint.class);
 			BetonQuest.getInstance().registerEvents("focuspoint", Focus.class);
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
+			log("Plugin hooked: MythicMobs");
+			MythicInstance instance = MythicInstance.getInstance();
+			MythicEvents mythEvents = new MythicEvents();
+			mythEvents.runTaskTimer(this, 0, 1);
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("Citizens") != null) {
+			log("Plugin hooked: Citizens");
+			CitizensInstance instance = CitizensInstance.getInstance();
+			CitizensEvents npcEvents = new CitizensEvents();
+			npcEvents.runTaskTimer(this, 0, 1);
 		}
 	}
 

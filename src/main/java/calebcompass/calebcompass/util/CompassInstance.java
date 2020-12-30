@@ -215,6 +215,10 @@ public class CompassInstance {
 							}
 						}
 					}
+
+					for (SavePoint cur : SavePointConfig.getInstance().getCurrentPoints()) {
+						if (cur.isGlobal()) this.addSavePoint(uuid, cur);
+					}
 					continue;
 				}
 				if (compassConfig.isBoolean(curPath + "viewing")) setPlayerVisible(uuid, compassConfig.getBoolean(curPath + "viewing"));
@@ -225,6 +229,10 @@ public class CompassInstance {
 							if (newPoint != null) this.addSavePoint(uuid, newPoint);
 						}
 					}
+				}
+
+				for (SavePoint cur : SavePointConfig.getInstance().getCurrentPoints()) {
+					if (cur.isGlobal()) this.addSavePoint(uuid, cur);
 				}
 			} catch (Exception e) {			}
 		}

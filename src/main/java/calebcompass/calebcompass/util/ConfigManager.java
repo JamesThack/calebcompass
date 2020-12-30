@@ -1,8 +1,14 @@
 package calebcompass.calebcompass.util;
 
 import calebcompass.calebcompass.CalebCompass;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
@@ -12,19 +18,29 @@ public class ConfigManager {
 
 	private FileConfiguration compassConfig;
 
-	public ConfigManager(CalebCompass instance) {
-		init(instance);
+	private static ConfigManager instance;
+
+	private Material focusItem;
+
+	public static ConfigManager getInstance() {
+		if (instance == null) instance = new ConfigManager();
+		return instance;
+	}
+
+	public ConfigManager() {
+		init();
 		setup();
 	}
 
-	public void init(CalebCompass instance) {
-		compassFile = new File(instance.getDataFolder(), "compass.yml");
-		if (!compassFile.exists()) instance.saveResource("compass.yml", false);
+	public void init() {
+		CalebCompass instancec = (CalebCompass) Bukkit.getPluginManager().getPlugin("CalebCompass");
+		compassFile = new File(instancec.getDataFolder(), "compass.yml");
+		if (!compassFile.exists()) instancec.saveResource("compass.yml", false);
 		compassConfig = YamlConfiguration.loadConfiguration(compassFile);
 	}
 
 	public void setup() {
-		init(CalebCompass.getInstance());
+		init();
 		setupDefault();
 
 		for (Symbol symbol : Symbol.values()) {
@@ -36,6 +52,14 @@ public class ConfigManager {
 
 		Util.setBarColor(getString("bar-color"));
 		Util.setBarStyle(getString("bar-style"));
+
+		try {
+			if (compassConfig.getString("focus-item").equalsIgnoreCase("NOITEM")) focusItem = null;
+			else focusItem = Material.valueOf(compassConfig.getString("focus-item").toUpperCase());
+		} catch (Exception e) {
+			System.out.println("Error, item " + compassConfig.getString("focus-item") + " is not recognised! Use NOITEM if you want this feature disabled");
+			focusItem = null;
+		}
 	}
 
 	private void setupValues(Symbol symbol) {
@@ -61,7 +85,7 @@ public class ConfigManager {
 		setDefaultValue(regPath + Symbol.NORTH_WEST.getName(), "&6&l" + "NW");
 		setDefaultValue(regPath + Symbol.TRACKER.getName(), "&a&l" + " !!! ");
 		setDefaultValue(regPath + Symbol.WAYPOINT.getName(), "&c&l" + " !!! ");
-		setDefaultValue(regPath + Symbol.FILLED.getName(), "&f" + "⬟");
+		setDefaultValue(regPath + Symbol.FILLED.getName(), "&#ffffff&l" + "⬟");
 
 		setDefaultValue(hovPath + Symbol.NORTH.getName(), "&b&l" + "N");
 		setDefaultValue(hovPath + Symbol.NORTH_EAST.getName(), "&b&l" + "NE");
@@ -81,12 +105,18 @@ public class ConfigManager {
 		setDefaultValue("bar-color", "purple");
 		setDefaultValue("bar-style", "solid");
 
+		setDefaultValue("focus-item", "NOITEM");
+
 		save();
 	}
 
 	private void setDefaultValue(String path, String value) {
 		if (compassConfig.getString(path) != null) return;
 		compassConfig.set(path, value);
+	}
+
+	public Material getFocusItem() {
+		return focusItem;
 	}
 
 	public void save() {

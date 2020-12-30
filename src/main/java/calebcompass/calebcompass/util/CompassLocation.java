@@ -1,6 +1,7 @@
 package calebcompass.calebcompass.util;
 
 import calebcompass.calebcompass.SavePoints.SavePoint;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,8 @@ public class CompassLocation {
 	private Location origin;
 	private Location target;
 
+	private Player player;
+
 	private boolean isShowing;
 	private boolean isTracking;
 
@@ -21,6 +24,8 @@ public class CompassLocation {
 
 	public CompassLocation(Player player, Location loc1, Location loc2) {
 		uuid = player.getUniqueId();
+
+		this.player = player;
 
 		origin = loc1;
 		target = loc2;
@@ -76,8 +81,21 @@ public class CompassLocation {
 		isShowing = showing;
 	}
 
-	public ArrayList<SavePoint> getActivePoints() {
+	public ArrayList<SavePoint> getTrueActivePoints() {
 		return activePoints;
+	}
+
+	public ArrayList<SavePoint> getActivePoints() {
+		ArrayList<SavePoint> returnPoints = new ArrayList<>();
+		player = Bukkit.getPlayer(uuid);
+		if (player != null && activePoints != null) {
+			for (SavePoint cur : activePoints) {
+				if (player.getLocation().getWorld().equals(cur.getLoc1().getWorld()) && (cur.getLoc1().distance(player.getLocation()) <= cur.getMaxRange() || cur.getMaxRange() <=0)) {
+					returnPoints.add(cur);
+				}
+			}
+		}
+		return returnPoints;
 	}
 
 	public void addActivePoint(SavePoint newPoint) {

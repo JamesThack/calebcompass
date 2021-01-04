@@ -1,12 +1,13 @@
 package calebcompass.calebcompass;
 
-import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.SavePoints.SavePoint;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import calebcompass.calebcompass.citizens.CitizensInstance;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.CompassLocation;
+import calebcompass.calebcompass.util.LangManager;
+import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -19,19 +20,19 @@ import java.util.ArrayList;
 
 public class CalebCompassCommand implements CommandExecutor {
 
-	private final static String PREFIX = "§7[§eCaleb Compass§7]§r: ";
+	private final static String PREFIX = MessageUtil.colourise(LangManager.getInstance().getString("prefix"));
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// help
 		if ((args.length == 1 || (args.length >=1 && args[1].equals("1"))) && args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage(PREFIX + "Commands, page 1/2:");
-			sender.sendMessage("§4/calebcompass track O:(player) x y z§r Track a set of coordinates on the compass");
-			sender.sendMessage("§4/calebcompass clear O:(player)§r Clear current track");
-			sender.sendMessage("§4/calebcompass hide O:(player)§r Hide the compass");
-			sender.sendMessage("§4/calebcompass show O:§(player)§r Show the compass");
-			sender.sendMessage("§4/calebcompass save (name)§r Save a new waypoint for the compass");
-			sender.sendMessage("§4Any arguments marked with O: are optional");
+			sender.sendMessage(PREFIX +MessageUtil.colourise(LangManager.getInstance().getString("help-command-header-1")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-track")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-clear")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-hide")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-show")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-save")));
+			sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-footer")));
 			return true;
 		}
 
@@ -39,30 +40,30 @@ public class CalebCompassCommand implements CommandExecutor {
 			try {
 				switch (Integer.parseInt(args[1])) {
 					case(2):
-						sender.sendMessage(PREFIX + "Commands, page 2/2");
-						sender.sendMessage("§4/calebcompass remove (waypoint)§r Remove a waypoint");
-						sender.sendMessage("§4/calebcompass toggle O:(player) (waypoint) (enable/disable)§r Toggle viewing a waypoint");
-						sender.sendMessage("§4/calebcompass focus§r Focus your quest marker on a specific waypoint");
-						sender.sendMessage("§4/calebcompass waypoints (page)§r List all active waypoints enabled for you");
-						sender.sendMessage("§4Any arguments marked with O: are optional");
+						sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("help-command-header-2")));
+						sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-remove")));
+						sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-toggle")));
+						sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-focus")));
+						sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-waypoints")));
+						sender.sendMessage(MessageUtil.colourise(LangManager.getInstance().getString("help-command-footer")));
 						return true;
 				}
 			} catch (Exception e) {
 			}
-			sender.sendMessage(PREFIX + "Page not found, try /calebcompass help");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("help-page-not-found")));
 			return true;
 		}
 
 		// track
 		if (args.length == 4 && args[0].equalsIgnoreCase("track")) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage(PREFIX + "You must be a player to use this command, use /calebcompass track (player) x y z:");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("track-from-player")));
 				return true;
 			}
 
 			Player player = (Player) sender;
 			if (!CompassInstance.hasPerm((Player) sender, "track.add.self")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
@@ -76,7 +77,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[1]) + 0.5, Double.parseDouble(args[2]), Double.parseDouble(args[3]) + 0.5));
 				location.setTracking(true);
 				CompassInstance.getInstance().saveData();
-				sender.sendMessage(PREFIX + "Successfully added track point");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("track-point-added")));
 				return true;
 			} catch (Exception e) {
 				return true;
@@ -87,12 +88,12 @@ public class CalebCompassCommand implements CommandExecutor {
 		if (args.length >= 5 && args[0].equalsIgnoreCase("track")) {
 			Player player = Bukkit.getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("player-not-found")));
 				return true;
 			}
 
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.add.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
@@ -105,7 +106,7 @@ public class CalebCompassCommand implements CommandExecutor {
 				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[2]) + 0.5, Double.parseDouble(args[3]), Double.parseDouble(args[4]) + 0.5));
 				location.setTracking(true);
 				CompassInstance.getInstance().saveData();
-				sender.sendMessage(PREFIX + "Successfully added track point for the player " + player.getDisplayName());
+				sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("track-point-other-added"),"%player%", player.getDisplayName())));
 				return true;
 			} catch (Exception e) {
 				return true;
@@ -116,13 +117,13 @@ public class CalebCompassCommand implements CommandExecutor {
 		if (args.length == 1 && args[0].equalsIgnoreCase("clear") && sender instanceof Player) {
 			Player player = (Player) sender;
 			if (!CompassInstance.hasPerm((Player) sender, "track.remove.self")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
 			CompassInstance.getInstance().saveData();
-			sender.sendMessage(PREFIX + "Successfully removed track point");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("track-point-removed")));
 			return true;
 		}
 
@@ -130,33 +131,35 @@ public class CalebCompassCommand implements CommandExecutor {
 		if (args.length >= 2 && args[0].equalsIgnoreCase("clear")) {
 			Player player = Bukkit.getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("player-not-found")));
 				return true;
 			}
 
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "track.remove.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
 			CompassInstance.getInstance().saveData();
-			sender.sendMessage(PREFIX + "You successfully cleared the track point for " + player.getDisplayName());
+			sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("track-point-other-removed"), "%player%", player.getDisplayName())));
 			return true;
 		}
 
 		// reload
 		if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "reload")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
+            CalebCompass.getLangManager().setup();
         	CalebCompass.getConfigManager().setup();
+
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
         	if (MythicInstance.isPluginInstalled) MythicInstance.getInstance().load();
         	if (CitizensInstance.isPluginInstalled) CitizensInstance.getInstance().load();
-        	sender.sendMessage(PREFIX + "Config has been loaded into the game");
+        	sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("config-reload")));
         	return true;
         }
 
@@ -164,31 +167,31 @@ public class CalebCompassCommand implements CommandExecutor {
 
 		if (args.length == 1 && args[0].equalsIgnoreCase("hide") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "view.hide.self")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			CompassInstance.getInstance().setPlayerVisible((Player) sender, false);
 			CompassInstance.getInstance().saveData();
-			sender.sendMessage(PREFIX + "Hid compass");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("compass-hide")));
 			return true;
 		}
 
 		// hide
 		if (args.length >= 2 && args[0].equalsIgnoreCase("hide")) {
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.hide.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			Player player = Bukkit.getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("player-not-found")));
 				return true;
 			}
 
 			CompassInstance.getInstance().setPlayerVisible(player, false);
-			sender.sendMessage(PREFIX + "Hid compass for player " + args[1]);
+			sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("compass-other-hide"), "%player%", player.getDisplayName())));
 			CompassInstance.getInstance().saveData();
 			return true;
 		}
@@ -196,12 +199,12 @@ public class CalebCompassCommand implements CommandExecutor {
 		// show
 		if (args.length == 1 && args[0].equalsIgnoreCase("show") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "view.show.self")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			CompassInstance.getInstance().setPlayerVisible((Player) sender, true);
-			sender.sendMessage(PREFIX + "Showing compass");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("compass-show")));
 			CompassInstance.getInstance().saveData();
 			return true;
 		}
@@ -209,18 +212,18 @@ public class CalebCompassCommand implements CommandExecutor {
 		// show
 		if (args.length >= 2 && args[0].equalsIgnoreCase("show")) {
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "view.show.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			Player player = Bukkit.getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("player-not-found")));
 				return true;
 			}
 
 			CompassInstance.getInstance().setPlayerVisible(Bukkit.getPlayer(args[1]), true);
-			sender.sendMessage(PREFIX + "Showing compass for player " + args[1]);
+			sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("compass-other-show"), "%player%", player.getDisplayName())));
 			CompassInstance.getInstance().saveData();
 			return true;
 		}
@@ -228,17 +231,17 @@ public class CalebCompassCommand implements CommandExecutor {
 		// save point
 		if (args.length >= 2 && args[0].equalsIgnoreCase("save") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.save")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			if (SavePointConfig.getInstance().pointExists(args[1])) {
-				sender.sendMessage(PREFIX + "A point with this name already exists");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-already-exist")));
 				return true;
 			}
 			SavePoint newSave = new SavePoint(((Player) sender).getLocation(), args[1], CalebCompass.getConfigManager().getString("regular.waypoint"), CalebCompass.getConfigManager().getString("hovered.waypoint"));
 			newSave.savePoint();
-			sender.sendMessage(PREFIX + "Saved point");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-saved")));
 			SavePointConfig.getInstance().saveData();
 			return true;
 		}
@@ -246,16 +249,16 @@ public class CalebCompassCommand implements CommandExecutor {
 		// remove point
 		if (args.length >= 2 && args[0].equalsIgnoreCase("remove") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.remove")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			if (!SavePointConfig.getInstance().pointExists(args[1])) {
-				sender.sendMessage(PREFIX + "No point found with this name");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-not-found")));
 				return true;
 			}
 			SavePointConfig.getInstance().removeSave(SavePointConfig.getInstance().getPointFromName(args[1]));
-			sender.sendMessage(PREFIX + "Removed point");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-removed")));
 			SavePointConfig.getInstance().saveData();
 			CompassInstance.getInstance().load();
 			return true;
@@ -264,7 +267,7 @@ public class CalebCompassCommand implements CommandExecutor {
 		// toggle point
 		if (args.length == 3 && args[0].equalsIgnoreCase("toggle") && sender instanceof  Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.toggle.self")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
@@ -276,12 +279,12 @@ public class CalebCompassCommand implements CommandExecutor {
 			} else if  (args[2].equalsIgnoreCase("disable") || args[2].equalsIgnoreCase("off")) {
 				toggleTo = false;
 			} else {
-				sender.sendMessage(PREFIX + "Please enter either disable/enable");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("missing-toggle")));
 				return true;
 			}
 
 			if (!SavePointConfig.getInstance().pointExistsExplicit(args[1])) {
-				sender.sendMessage(PREFIX + "Point not found");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-not-found")));
 				return true;
 			}
 
@@ -290,7 +293,7 @@ public class CalebCompassCommand implements CommandExecutor {
 			if (!toggleTo) CompassInstance.getInstance().removeSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
 			String status = "on";
 			if (!toggleTo) status = "off";
-			sender.sendMessage(PREFIX + "Toggled point " + args[1] + " " + status);
+			sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(MessageUtil.replaceVariable(LangManager.getInstance().getString("point-toggled"), "%point%", args[1]), "%toggle%",status)));
 			CompassInstance.getInstance().saveData();
 			SavePointConfig.getInstance().saveData();
 			CompassInstance.getInstance().load();
@@ -300,13 +303,13 @@ public class CalebCompassCommand implements CommandExecutor {
 		// toggle point
 		if (args.length >= 4 && args[0].equalsIgnoreCase("toggle")) {
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "point.toggle.other")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 
 			Player player = Bukkit.getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(PREFIX + "Player not found!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("player-not-found")));
 				return true;
 			}
 
@@ -316,19 +319,19 @@ public class CalebCompassCommand implements CommandExecutor {
 			} else if  (args[3].equalsIgnoreCase("disable") || args[3].equalsIgnoreCase("off")) {
 				toggleTo = false;
 			} else {
-				sender.sendMessage(PREFIX + "Please enter either disable/enable");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("missing-toggle")));
 				return true;
 			}
 
 			if (!SavePointConfig.getInstance().pointExistsExplicit(args[2])) {
-				sender.sendMessage(PREFIX + "Point not found");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-not-found")));
 				return true;
 			}
 
 			SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), args[2], toggleTo);
 			if (toggleTo) CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
 			if (!toggleTo) CompassInstance.getInstance().removeSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
-			sender.sendMessage(PREFIX + "Toggled point " + args[2] + " for player " + args[1]);
+			sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(LangManager.getInstance().getString("point-toggled"), "%point%",args[1]), "%toggle%", String.valueOf(toggleTo)), "%player%", player.getDisplayName())));
 			CompassInstance.getInstance().saveData();
 			SavePointConfig.getInstance().saveData();
 			CompassInstance.getInstance().load();
@@ -340,21 +343,21 @@ public class CalebCompassCommand implements CommandExecutor {
 
 			SavePointConfig.getInstance().load();
 			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 			Player player = (Player) sender;
 
 			SavePoint point = getSavePointAtLoc(player);
 			if (point == null)  {
-				player.sendMessage(PREFIX + "No point found, please look at a waypoint!");
+				player.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-not-looked")));
 				return true;
 			}
 
 			CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());
 			CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
 			CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
-			sender.sendMessage(PREFIX + "Changed focus");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("focus-changed")));
 			CompassInstance.getInstance().saveData();
 			return true;
 		}
@@ -365,14 +368,14 @@ public class CalebCompassCommand implements CommandExecutor {
 
 			SavePointConfig.getInstance().load();
 			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 			Player player = (Player) sender;
 
 			SavePoint point = getSavePointFromName(player, args[1]);
 			if (point == null) {
-				player.sendMessage(PREFIX + "No point found with this name!");
+				player.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("point-not-found")));
 				return true;
 			}
 
@@ -380,7 +383,7 @@ public class CalebCompassCommand implements CommandExecutor {
 			CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());
 			CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
 			CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
-			sender.sendMessage(PREFIX + "Changed focus");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("focus-changed")));
 			CompassInstance.getInstance().saveData();
 			return true;
 		}
@@ -388,17 +391,17 @@ public class CalebCompassCommand implements CommandExecutor {
 		//list waypoints
 		if (args.length>=1 && args[0].equalsIgnoreCase("waypoints") && sender instanceof Player) {
 			if (!CompassInstance.hasPerm((Player) sender, "point.list")) {
-				sender.sendMessage(PREFIX + "You do not have permission for this command!");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("no-permission")));
 				return true;
 			}
 			if (args.length == 1 || args[1].equals("1")) {
-				sender.sendMessage(PREFIX + "Current active points page 1:");
+				sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("active-points-list"), "%page%", "1")));
 				CompassLocation loc = CompassInstance.getInstance().getCompassLocation((Player) sender);
 				if (loc == null || loc.getActivePoints() == null) return true;
 				for (int i = 0; i < 5; i++) {
 					try {
 						SavePoint currentPoint = loc.getActivePoints().get(i);
-						if (currentPoint != null) sender.sendMessage("§7§l" + currentPoint.getName() + " §r§eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
+						if (currentPoint != null) sender.sendMessage(MessageUtil.colourise(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(LangManager.getInstance().getString("active-point"), "%symbol%", currentPoint.getSymbol()), "%loc-z%", String.valueOf(currentPoint.getLoc1().getBlockZ())), "%loc-y%", String.valueOf(currentPoint.getLoc1().getBlockY())), "%loc-x%", String.valueOf(currentPoint.getLoc1().getBlockX())), "%name%",currentPoint.getName())));
 					} catch(Exception e) { }
 				}
 				return true;
@@ -406,25 +409,25 @@ public class CalebCompassCommand implements CommandExecutor {
 			try {
 				int page = Integer.parseInt(args[1]);
 				if (page >=2) {
-					sender.sendMessage(PREFIX + "Current active points page " + page+":");
+					sender.sendMessage(PREFIX + MessageUtil.colourise(MessageUtil.replaceVariable(LangManager.getInstance().getString("active-points-list"), "%page%", args[1])));
 					CompassLocation loc = CompassInstance.getInstance().getCompassLocation((Player) sender);
 					if (loc == null || loc.getActivePoints() == null) return true;
 					for (int i = (page * 5) - 5; i < (page * 5); i++) {
 						try {
 							SavePoint currentPoint = loc.getActivePoints().get(i);
-							if (currentPoint != null) sender.sendMessage("§7§l" + currentPoint.getName() + " §r§eX:" + currentPoint.getLoc1().getBlockX() + " §eY:" + currentPoint.getLoc1().getBlockY() + " §eZ:" + currentPoint.getLoc1().getBlockZ() + " §eSymbol: " + currentPoint.getSymbol());
+							if (currentPoint != null) sender.sendMessage(MessageUtil.colourise(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(MessageUtil.replaceVariable(LangManager.getInstance().getString("active-point"), "%symbol%", currentPoint.getSymbol()), "%loc-z%", String.valueOf(currentPoint.getLoc1().getBlockZ())), "%loc-y%", String.valueOf(currentPoint.getLoc1().getBlockY())), "%loc-x%", String.valueOf(currentPoint.getLoc1().getBlockX())), "%name%",currentPoint.getName())));
 						} catch(Exception e) { }
 					}
 					return true;
 				}
 			} catch(Exception e) { }
-			sender.sendMessage(PREFIX + "Please enter a valid page number!");
+			sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("page-not-found")));
 			return true;
 		}
 
 
 
-		sender.sendMessage(PREFIX + "Type '/calebcompass help' for more info");
+		sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("help")));
 		return true;
 	}
 

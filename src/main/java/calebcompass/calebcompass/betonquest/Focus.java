@@ -1,9 +1,10 @@
 package calebcompass.calebcompass.betonquest;
 
-import calebcompass.calebcompass.CalebCompass;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.CompassLocation;
+import calebcompass.calebcompass.util.LangManager;
+import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -18,7 +19,7 @@ public class Focus extends QuestEvent {
     public Focus(Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         name = instruction.getPart(1);
-        if (!SavePointConfig.getInstance().pointExistsExplicit(name)) throw new InstructionParseException("Enter a valid waypoint");
+        if (!SavePointConfig.getInstance().pointExistsExplicit(name)) throw new InstructionParseException(MessageUtil.colourise(LangManager.getInstance().getString("waypoint-no-valid")));
 
     }
 

@@ -2,6 +2,8 @@ package calebcompass.calebcompass.betonquest;
 
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import calebcompass.calebcompass.util.CompassInstance;
+import calebcompass.calebcompass.util.LangManager;
+import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
@@ -17,11 +19,11 @@ public class TogglePoint extends QuestEvent {
     public TogglePoint(Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         name = instruction.getPart(1);
-        if (!SavePointConfig.getInstance().pointExistsExplicit(name)) throw new InstructionParseException("Enter a valid waypoint");
+        if (!SavePointConfig.getInstance().pointExistsExplicit(name)) throw new InstructionParseException(MessageUtil.colourise(LangManager.getInstance().getString("waypoint-no-valid")));
         String ins = instruction.getPart(2);
         if (ins.equalsIgnoreCase("enable")) toToggle = true;
         if (ins.equalsIgnoreCase("disable")) toToggle = false;
-        if (!ins.equalsIgnoreCase("disable") && !ins.equalsIgnoreCase("enable")) throw new InstructionParseException("Enter either enable/disable");
+        if (!ins.equalsIgnoreCase("disable") && !ins.equalsIgnoreCase("enable")) throw new InstructionParseException(LangManager.getInstance().getString("bq-missing-toggle"));
 
     }
 

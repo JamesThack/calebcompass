@@ -10,11 +10,15 @@ import java.util.regex.Pattern;
 
 public class MessageUtil {
 
-	private static final String FORMAT = "▘⬟⬟⬟⬟▙⬟⬟⬟⬟▚⬟⬟⬟⬟▛⬟⬟⬟⬟▜⬟⬟⬟⬟▝⬟⬟⬟⬟▞⬟⬟⬟⬟▟⬟⬟⬟⬟▘⬟⬟⬟⬟▙⬟⬟⬟⬟▚⬟⬟⬟⬟▛⬟⬟⬟⬟▜⬟⬟⬟⬟▝⬟⬟⬟⬟▞⬟⬟⬟⬟▟⬟⬟⬟⬟▘⬟⬟⬟⬟▙⬟⬟⬟⬟▚⬟⬟⬟⬟▛⬟⬟⬟⬟▜⬟⬟⬟⬟▝⬟⬟⬟⬟▞⬟⬟⬟⬟▟⬟⬟⬟⬟";
-
-
-	public static String colourise(String message) {
+    public static String colourise(String message) {
 		return message.replace("&", "§");
-	}
+    }
+
+    public static String replaceVariable(String message, String placeholder, String replacement) {
+        Pattern p = Pattern.compile(placeholder);
+        Matcher m = p.matcher(message);
+        return m.replaceAll(replacement);
+    }
+
 
 }

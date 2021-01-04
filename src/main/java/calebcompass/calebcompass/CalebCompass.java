@@ -11,6 +11,7 @@ import calebcompass.calebcompass.mythicmobs.MythicEvents;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.ConfigManager;
+import calebcompass.calebcompass.util.LangManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -23,11 +24,16 @@ public final class CalebCompass extends JavaPlugin {
 
 	private static ConfigManager configManager;
 
+	private static LangManager langManager;
+
 	@Override
 	public void onEnable() {
 		instance = this;
 
 		configManager = ConfigManager.getInstance();
+
+		langManager = LangManager.getInstance();
+
 
 		CompassMoveEvent moveEvent = new CompassMoveEvent();
 		moveEvent.runTaskTimer(this, 0, 1);
@@ -73,6 +79,8 @@ public final class CalebCompass extends JavaPlugin {
 	public static ConfigManager getConfigManager() {
 		return configManager;
 	}
+
+	public static LangManager getLangManager() { return langManager;}
 
 	public static void log(String log) {
 		Bukkit.getLogger().log(Level.INFO, "[CalebCompass]: " + log);

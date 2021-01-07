@@ -42,6 +42,8 @@ public final class CalebCompass extends JavaPlugin {
 
 		getServer().getPluginCommand("calebcompass").setExecutor(new CalebCompassCommand());
 
+		LangManager.getInstance();
+
 		if (Bukkit.getPluginManager().getPlugin("BetonQuest") != null) {
 			log("Plugin hooked: BetonQuest");
 			BetonQuest.getInstance().registerEvents("compasstrack", TrackEvent.class);

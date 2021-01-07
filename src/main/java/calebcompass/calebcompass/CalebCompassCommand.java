@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class CalebCompassCommand implements CommandExecutor {
 
-	private final static String PREFIX = MessageUtil.colourise(LangManager.getInstance().getString("prefix"));
+	private static String PREFIX = MessageUtil.colourise(LangManager.getInstance().getString("prefix"));
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -157,6 +157,8 @@ public class CalebCompassCommand implements CommandExecutor {
 
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
+
+        	PREFIX = LangManager.getInstance().getString("prefix");
         	if (MythicInstance.isPluginInstalled) MythicInstance.getInstance().load();
         	if (CitizensInstance.isPluginInstalled) CitizensInstance.getInstance().load();
         	sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("config-reload")));

@@ -18,9 +18,11 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
+import static calebcompass.calebcompass.util.LangManager.PREFIX;
+
 public class CalebCompassCommand implements CommandExecutor {
 
-	private final static String PREFIX = MessageUtil.colourise(LangManager.getInstance().getString("prefix"));
+
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

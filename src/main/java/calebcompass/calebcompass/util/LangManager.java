@@ -15,6 +15,7 @@ public class LangManager {
 
     private static LangManager instance;
 
+    public static String PREFIX;
 
     public static LangManager getInstance() {
         if (instance == null) instance = new LangManager();
@@ -36,6 +37,7 @@ public class LangManager {
     public void setup() {
         init();
         setupDefault();
+        PREFIX = MessageUtil.colourise(getString("prefix")); // update the prefix
     }
 
     public String getString(String path) {

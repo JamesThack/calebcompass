@@ -12,9 +12,9 @@ import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.ConfigManager;
 import calebcompass.calebcompass.util.LangManager;
+import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.betoncraft.betonquest.BetonQuest;
 
 import java.util.logging.Level;
 

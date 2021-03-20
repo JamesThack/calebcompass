@@ -6,11 +6,11 @@ import calebcompass.calebcompass.util.CompassLocation;
 import calebcompass.calebcompass.util.LangManager;
 import calebcompass.calebcompass.util.MessageUtil;
 import org.bukkit.entity.Player;
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.PlayerConverter;
 
 public class Focus extends QuestEvent {
 

@@ -158,7 +158,7 @@ public class CalebCompassCommand implements CommandExecutor {
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
 
-        	PREFIX = LangManager.getInstance().getString("prefix");
+        	PREFIX = MessageUtil.colourise(LangManager.getInstance().getString("prefix"));
         	if (MythicInstance.isPluginInstalled) MythicInstance.getInstance().load();
         	if (CitizensInstance.isPluginInstalled) CitizensInstance.getInstance().load();
         	sender.sendMessage(PREFIX + MessageUtil.colourise(LangManager.getInstance().getString("config-reload")));

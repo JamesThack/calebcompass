@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import java.io.File;
 
 public class ConfigManager {

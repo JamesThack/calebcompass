@@ -13,7 +13,7 @@ import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.betoncraft.betonquest.BetonQuest;
+import org.betonquest.betonquest.BetonQuest;
 
 import java.util.logging.Level;
 

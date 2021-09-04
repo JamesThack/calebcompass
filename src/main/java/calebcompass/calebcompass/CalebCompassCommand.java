@@ -23,7 +23,7 @@ public class CalebCompassCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		// help
+		// help - Let me help you
 		if ((args.length == 1 || (args.length >=1 && args[1].equals("1"))) && args[0].equalsIgnoreCase("help")) {
 			sender.sendMessage(PREFIX + "Commands, page 1/2:");
 			sender.sendMessage("§4/calebcompass track O:(player) x y z§r Track a set of coordinates on the compass");

@@ -11,9 +11,9 @@ import calebcompass.calebcompass.mythicmobs.MythicEvents;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.ConfigManager;
+import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.betonquest.betonquest.BetonQuest;
 
 import java.util.logging.Level;
 
@@ -37,11 +37,16 @@ public final class CalebCompass extends JavaPlugin {
 		getServer().getPluginCommand("calebcompass").setExecutor(new CalebCompassCommand());
 
 		if (Bukkit.getPluginManager().getPlugin("BetonQuest") != null) {
-			log("Plugin hooked: BetonQuest");
-			BetonQuest.getInstance().registerEvents("compasstrack", TrackEvent.class);
-			BetonQuest.getInstance().registerEvents("clearcompass", CompassClear.class);
-			BetonQuest.getInstance().registerEvents("togglewaypoint", TogglePoint.class);
-			BetonQuest.getInstance().registerEvents("focuspoint", Focus.class);
+			try {
+				BetonQuest.getInstance().registerEvents("compasstrack", TrackEvent.class);
+				BetonQuest.getInstance().registerEvents("clearcompass", CompassClear.class);
+				BetonQuest.getInstance().registerEvents("togglewaypoint", TogglePoint.class);
+				BetonQuest.getInstance().registerEvents("focuspoint", Focus.class);
+				log("Plugin hooked: BetonQuest");
+			} catch (Exception e) {
+				log("Unable to hook into BetonQuest! Disabling features");
+				e.printStackTrace();
+			}
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {

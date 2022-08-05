@@ -1,6 +1,6 @@
 package calebcompass.calebcompass.mythicmobs;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.bukkit.entity.Entity;
 
 public class MythicComparer {

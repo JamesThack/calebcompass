@@ -2,14 +2,11 @@ package calebcompass.calebcompass.util;
 
 import calebcompass.calebcompass.CalebCompass;
 // import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.apache.commons.lang.StringEscapeUtils;
 import java.io.File;
 
 public class ConfigManager {

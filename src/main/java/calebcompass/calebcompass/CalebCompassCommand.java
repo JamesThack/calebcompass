@@ -5,6 +5,7 @@ import calebcompass.calebcompass.SavePoints.SavePoint;
 import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import calebcompass.calebcompass.citizens.CitizensInstance;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
+import calebcompass.calebcompass.towny.TownyConfig;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.CompassLocation;
 import org.bukkit.Bukkit;
@@ -75,8 +76,8 @@ public class CalebCompassCommand implements CommandExecutor {
 				location.setOrigin(player.getLocation());
 				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[1]) + 0.5, Double.parseDouble(args[2]), Double.parseDouble(args[3]) + 0.5));
 				location.setTracking(true);
-				CompassInstance.getInstance().saveData();
 				sender.sendMessage(PREFIX + "Successfully added track point");
+				CompassInstance.getInstance().saveData();
 				return true;
 			} catch (Exception e) {
 				return true;
@@ -104,8 +105,8 @@ public class CalebCompassCommand implements CommandExecutor {
 				location.setOrigin(player.getLocation());
 				location.setTarget(new Location(player.getWorld(), Double.parseDouble(args[2]) + 0.5, Double.parseDouble(args[3]), Double.parseDouble(args[4]) + 0.5));
 				location.setTracking(true);
-				CompassInstance.getInstance().saveData();
 				sender.sendMessage(PREFIX + "Successfully added track point for the player " + player.getDisplayName());
+				CompassInstance.getInstance().saveData();
 				return true;
 			} catch (Exception e) {
 				return true;
@@ -121,8 +122,8 @@ public class CalebCompassCommand implements CommandExecutor {
 			}
 
 			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
-			CompassInstance.getInstance().saveData();
 			sender.sendMessage(PREFIX + "Successfully removed track point");
+			CompassInstance.getInstance().saveData();
 			return true;
 		}
 
@@ -140,8 +141,8 @@ public class CalebCompassCommand implements CommandExecutor {
 			}
 
 			if (CompassInstance.getInstance().getCompassLocation(player) != null) CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
-			CompassInstance.getInstance().saveData();
 			sender.sendMessage(PREFIX + "You successfully cleared the track point for " + player.getDisplayName());
+			CompassInstance.getInstance().saveData();
 			return true;
 		}
 
@@ -150,12 +151,15 @@ public class CalebCompassCommand implements CommandExecutor {
 			if (sender instanceof Player && !CompassInstance.hasPerm((Player) sender, "reload")) {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");
 				return true;
+
 			}
+
         	CalebCompass.getConfigManager().setup();
         	SavePointConfig.getInstance().load();
         	CompassInstance.getInstance().load();
         	if (MythicInstance.isPluginInstalled) MythicInstance.getInstance().load();
         	if (CitizensInstance.isPluginInstalled) CitizensInstance.getInstance().load();
+        	if (Bukkit.getPluginManager().getPlugin("Towny") != null) TownyConfig.getInstance().load();
         	sender.sendMessage(PREFIX + "Config has been loaded into the game");
         	return true;
         }
@@ -169,9 +173,10 @@ public class CalebCompassCommand implements CommandExecutor {
 			}
 
 			CompassInstance.getInstance().setPlayerVisible((Player) sender, false);
-			CompassInstance.getInstance().saveData();
 			sender.sendMessage(PREFIX + "Hid compass");
+			CompassInstance.getInstance().saveData();
 			return true;
+
 		}
 
 		// hide
@@ -286,14 +291,12 @@ public class CalebCompassCommand implements CommandExecutor {
 			}
 
 			SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), args[1], toggleTo);
-			if (toggleTo) CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
-			if (!toggleTo) CompassInstance.getInstance().removeSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
+			if (toggleTo) CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[1]));
+			if (!toggleTo) CompassInstance.getInstance().removeSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[1]));
 			String status = "on";
 			if (!toggleTo) status = "off";
 			sender.sendMessage(PREFIX + "Toggled point " + args[1] + " " + status);
 			CompassInstance.getInstance().saveData();
-			SavePointConfig.getInstance().saveData();
-			CompassInstance.getInstance().load();
 			return true;
 		}
 
@@ -325,20 +328,18 @@ public class CalebCompassCommand implements CommandExecutor {
 				return true;
 			}
 
+
 			SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), args[2], toggleTo);
 			if (toggleTo) CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
 			if (!toggleTo) CompassInstance.getInstance().removeSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(args[2]));
 			sender.sendMessage(PREFIX + "Toggled point " + args[2] + " for player " + args[1]);
 			CompassInstance.getInstance().saveData();
-			SavePointConfig.getInstance().saveData();
-			CompassInstance.getInstance().load();
 			return true;
 		}
 
-		// focus point
+		 //focus point
 		if (args.length == 1 && args[0].equalsIgnoreCase("focus") && sender instanceof Player) {
 
-			SavePointConfig.getInstance().load();
 			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");
 				return true;
@@ -363,7 +364,6 @@ public class CalebCompassCommand implements CommandExecutor {
 		// focus point namepoint
 		if (args.length == 2 && args[0].equalsIgnoreCase("focus") && sender instanceof Player) {
 
-			SavePointConfig.getInstance().load();
 			if (!CompassInstance.hasPerm((Player) sender, "point.focus")) {
 				sender.sendMessage(PREFIX + "You do not have permission for this command!");
 				return true;
@@ -461,9 +461,6 @@ public class CalebCompassCommand implements CommandExecutor {
                 if(CompassInstance.getInstance().getCompassConfig().getConfigurationSection("playerdata." + player.getUniqueId().toString() + ".activepoints").contains(name)) { // check if player has the point into his list
                     SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), name, true); // toggle the waypoint to true
                     CompassInstance.getInstance().addSavePoint(player.getUniqueId(), SavePointConfig.getInstance().getPointFromName(name)); // save it
-                    CompassInstance.getInstance().saveData();
-                    SavePointConfig.getInstance().saveData();
-                    CompassInstance.getInstance().load();
                 }
         }
         else return null;

@@ -31,6 +31,7 @@ public class TrackEvent extends QuestEvent {
 		CompassInstance.getInstance().getCompassLocation(player).setOrigin(player.getLocation());
 		CompassInstance.getInstance().getCompassLocation(player).setTarget(tracked);
 		CompassInstance.getInstance().getCompassLocation(player).setTracking(true);
+
 		CompassInstance.getInstance().saveData();
 		return null;
 	}

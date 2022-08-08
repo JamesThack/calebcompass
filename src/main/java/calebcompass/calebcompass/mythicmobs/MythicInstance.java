@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MythicInstance {
 
@@ -21,8 +22,8 @@ public class MythicInstance {
     private boolean defaultMobShow;
     private String defaultRegular;
     private String defaultHovered;
-    private ArrayList<String[]> regularOverrides;
-    private ArrayList<String[]> hoveredOverride;
+    private HashMap<String, String> regularOverrides;
+    private HashMap<String, String> hoveredOverride;
 
     public static MythicInstance getInstance() {
         if (instance == null) instance = new MythicInstance();
@@ -61,20 +62,20 @@ public class MythicInstance {
     }
 
     private void loadRegularOverrides() {
-        regularOverrides = new ArrayList<>();
+        regularOverrides = new HashMap<>();
         if (config.getConfigurationSection("custom-overrides.regular") == null) return;
             for (String str : config.getConfigurationSection("custom-overrides.regular").getKeys(false)) {
                 String curPath = "custom-overrides.regular." + str;
-                regularOverrides.add(new String[]{str, config.getString(curPath)});
+                regularOverrides.put(str, config.getString(curPath));
             }
     }
 
     private void loadHoveredOverrides() {
-        hoveredOverride = new ArrayList<>();
+        hoveredOverride = new HashMap<>();
         if (config.getConfigurationSection("custom-overrides.hovered") == null) return;
         for (String str : config.getConfigurationSection("custom-overrides.hovered").getKeys(false)) {
             String curPath = "custom-overrides.hovered." + str;
-            hoveredOverride.add(new String[]{str, config.getString(curPath)});
+            hoveredOverride.put(str,  config.getString(curPath));
         }
     }
     private void setupDefaults() {
@@ -119,22 +120,17 @@ public class MythicInstance {
     }
 
     public String getRegularOverride(String mythicMob) {
-        for (String[] cur : regularOverrides) {
-            if (cur[0].equals(mythicMob)) return cur[1];
-        }
+        if (regularOverrides.containsKey(mythicMob)) return regularOverrides.get(mythicMob);
         return defaultRegular;
     }
 
     public String getHoveredOverride(String mythicMob) {
-        for (String[] cur : hoveredOverride) {
-            if (cur[0].equals(mythicMob)) return cur[1];
-        }
+        if (hoveredOverride.containsKey(mythicMob)) return hoveredOverride.get(mythicMob);
         return defaultHovered;
     }
 
     public boolean hasCustomOverride(String mobName) {
-        for (String[] cur : regularOverrides) { if (cur[0].equals(mobName)) return true; }
-        for (String[] cur : hoveredOverride) { if (cur[0].equals(mobName)) return true; }
+        if (regularOverrides.containsKey(mobName) || hoveredOverride.containsKey(mobName)) return true;
         return false;
     }
 }

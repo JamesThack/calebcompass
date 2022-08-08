@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class CompassInstance {
 	private static CompassInstance instance;
 
 	private List<BossBar> activeBars;
-	private List<CompassLocation> compassLocations;
+	private HashMap<String, CompassLocation> compassLocations;
 
 	private File playerFile = new File(CalebCompass.getInstance().getDataFolder(), "players.yml");
 	private FileConfiguration compassConfig;
@@ -33,7 +34,7 @@ public class CompassInstance {
 
 	private CompassInstance() {
 		activeBars = new ArrayList<>();
-		compassLocations = new ArrayList<>();
+		compassLocations = new HashMap<>();
 
 		if (!playerFile.exists()) CalebCompass.getInstance().saveResource("players.yml", false);
 		compassConfig = YamlConfiguration.loadConfiguration(playerFile);
@@ -113,39 +114,29 @@ public class CompassInstance {
 	}
 
 	public CompassLocation getCompassLocation(Player player) {
-		for (CompassLocation cur : compassLocations) {
-			if (cur.getUUID().equals(player.getUniqueId())) return cur;
-		}
-		return null;
+		return compassLocations.get(player.getUniqueId().toString());
 	}
 
 	public CompassLocation getCompassLocation(UUID player) {
-		for (CompassLocation cur : compassLocations) {
-			if (cur.getUUID().equals(player)) return cur;
-		}
-		return null;
+		return compassLocations.get(player.toString());
 	}
 
 	public CompassLocation addCompassLocation(UUID uuid, Location loc1, Location loc2) {
 		CompassLocation cache = null;
-		for (CompassLocation cur : compassLocations) {
-			if (cur.getUUID().equals(uuid)) cache = cur;
-		}
+		cache = compassLocations.get(uuid.toString());
 		if (cache != null) compassLocations.remove(cache);
 
 		CompassLocation locObs = new CompassLocation(uuid, loc1, loc2);
-		compassLocations.add(locObs);
+		compassLocations.put(uuid.toString(), locObs);
 		return locObs;
 	}
 
 	public CompassLocation addCompassLocation(CompassLocation loc) {
 		CompassLocation cache = null;
-		for (CompassLocation cur : compassLocations) {
-			if (cur.getUUID().equals(loc.getUUID())) cache = cur;
-		}
+		cache = compassLocations.get(loc.getUUID().toString());
 		if (cache != null) compassLocations.remove(cache);
 
-		compassLocations.add(loc);
+		compassLocations.put(loc.getUUID().toString(), loc);
 		return loc;
 	}
 
@@ -158,7 +149,7 @@ public class CompassInstance {
 	}
 
 	public void saveData() {
-		for (CompassLocation loc : compassLocations) {
+		for (CompassLocation loc : compassLocations.values()) {
 			String uuid = loc.getUUID().toString();
 			String path = "playerdata.";
 

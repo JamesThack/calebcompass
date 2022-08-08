@@ -1,12 +1,14 @@
 name: CalebCompass
 version: 3.2
 main: calebcompass.calebcompass.CalebCompass
-api-version: 1.13
+api-version: 1.16
 description: CalebCompass
+author: CalebBritannia
 softdepend:
   - BetonQuest
   - Citizens
   - MythicMobs
+  - Towny
 
 commands:
   calebcompass:

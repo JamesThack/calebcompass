@@ -19,6 +19,7 @@ public class CompassClear extends QuestEvent {
 		Player player = PlayerConverter.getPlayer(playerID);
 		if (CompassInstance.getInstance().getCompassLocation(player) == null) return null;
 		CompassInstance.getInstance().getCompassLocation(player).setTracking(false);
+		CompassInstance.getInstance().saveData();
 		return null;
 	}
 

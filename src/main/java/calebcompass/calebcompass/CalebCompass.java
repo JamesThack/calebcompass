@@ -1,5 +1,6 @@
 package calebcompass.calebcompass;
 
+import calebcompass.calebcompass.SavePoints.SavePointConfig;
 import calebcompass.calebcompass.betonquest.CompassClear;
 import calebcompass.calebcompass.betonquest.Focus;
 import calebcompass.calebcompass.betonquest.TogglePoint;
@@ -9,6 +10,7 @@ import calebcompass.calebcompass.citizens.CitizensInstance;
 import calebcompass.calebcompass.miscevents.ItemFocus;
 import calebcompass.calebcompass.mythicmobs.MythicEvents;
 import calebcompass.calebcompass.mythicmobs.MythicInstance;
+import calebcompass.calebcompass.towny.TownyEvents;
 import calebcompass.calebcompass.util.CompassInstance;
 import calebcompass.calebcompass.util.ConfigManager;
 import org.betonquest.betonquest.BetonQuest;
@@ -36,6 +38,8 @@ public final class CalebCompass extends JavaPlugin {
 
 		getServer().getPluginCommand("calebcompass").setExecutor(new CalebCompassCommand());
 
+		SavePointConfig.getInstance().load();
+
 		if (Bukkit.getPluginManager().getPlugin("BetonQuest") != null) {
 			try {
 				BetonQuest.getInstance().registerEvents("compasstrack", TrackEvent.class);
@@ -62,11 +66,16 @@ public final class CalebCompass extends JavaPlugin {
 			CitizensEvents npcEvents = new CitizensEvents();
 			npcEvents.runTaskTimer(this, 0, 1);
 		}
+
+		if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
+			log("Plugin hooked: Towny");
+		}
 	}
 
 	@Override
 	public void onDisable() {
 		CompassInstance.getInstance().saveData();
+		SavePointConfig.getInstance().saveData();
 	}
 
 	public static CalebCompass getInstance() {

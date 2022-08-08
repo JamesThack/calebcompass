@@ -90,6 +90,7 @@ public class CompassLocation {
 		player = Bukkit.getPlayer(uuid);
 		if (player != null && activePoints != null) {
 			for (SavePoint cur : activePoints) {
+				if (cur == null ) continue;
 				if (player.getLocation().getWorld().equals(cur.getLoc1().getWorld()) && (cur.getLoc1().distance(player.getLocation()) <= cur.getMaxRange() || cur.getMaxRange() <=0)) {
 					returnPoints.add(cur);
 				}

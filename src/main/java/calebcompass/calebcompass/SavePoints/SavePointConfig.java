@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class SavePointConfig {
@@ -22,7 +23,7 @@ public class SavePointConfig {
 
     private Plugin server = Bukkit.getPluginManager().getPlugin("CalebCompass");
 
-    private ArrayList<SavePoint> currentPoints;
+    private HashMap<String, SavePoint> currentPoints;
 
     public static SavePointConfig getInstance() {
         if (instance == null) instance = new SavePointConfig();
@@ -30,7 +31,7 @@ public class SavePointConfig {
     }
 
     public SavePointConfig() {
-        currentPoints = new ArrayList<SavePoint>();
+        currentPoints = new HashMap<>();
         savePointFile = new File(server.getDataFolder(), "savepoints.yml");
         if (!savePointFile.exists()) server.saveResource("savepoints.yml", false);
         savePointConfig = YamlConfiguration.loadConfiguration(savePointFile);
@@ -43,47 +44,32 @@ public class SavePointConfig {
     }
 
     public void addSave(SavePoint newP) {
-        this.currentPoints.add(newP);
+        this.currentPoints.put(newP.getName(), newP);
     }
 
     public ArrayList<SavePoint> getCurrentPoints() {
-        return currentPoints;
-    }
-
-    public void setCurrentPoints(ArrayList<SavePoint> currentPoints) {
-        this.currentPoints = currentPoints;
+        return new ArrayList<SavePoint>(currentPoints.values());
     }
 
     public void removeSave(SavePoint save) {
-        this.currentPoints.remove(save);
+        this.currentPoints.remove(save.getName());
         savePointConfig.set("points." + save.getName(), null);
     }
 
     public SavePoint getPointFromName(String name) {
-        for (SavePoint cur : currentPoints) {
-            if (name.equalsIgnoreCase(cur.getName())) {
-                return cur;
-            }
-        }
-        return null;
+        return currentPoints.get(name);
     }
 
     public boolean pointExists(String pointName) {
-        for (SavePoint cur : currentPoints) {
-            if (pointName.equalsIgnoreCase(cur.getName())) return true;
-        }
-        return false;
+        return pointExistsExplicit(pointName);
     }
 
     public boolean pointExistsExplicit(String pointName) {
-        for (SavePoint cur : currentPoints) {
-            if (pointName.equals(cur.getName())) return true;
-        }
-        return false;
+        return currentPoints.containsKey(pointName);
     }
 
     public void serialiseValues() {
-        for (SavePoint p : this.currentPoints) {
+        for (SavePoint p : currentPoints.values()) {
             savePointConfig.set("points." + p.getName() + ".world", p.getLoc1().getWorld().getName());
             savePointConfig.set("points." + p.getName() + ".x", p.getLoc1().getBlockX());
             savePointConfig.set("points." + p.getName() + ".y", p.getLoc1().getBlockY());
@@ -96,7 +82,7 @@ public class SavePointConfig {
     }
 
     public void load() {
-        this.currentPoints = new ArrayList<SavePoint>();
+        this.currentPoints = new HashMap<>();
         savePointConfig = YamlConfiguration.loadConfiguration(savePointFile);
         if (savePointConfig.getConfigurationSection("points") == null) return;
         for (String load : savePointConfig.getConfigurationSection("points").getKeys(false)) {
@@ -115,7 +101,7 @@ public class SavePointConfig {
                         savePointConfig.getString(curLoad + "symbol_hovered"));
                 if (savePointConfig.isBoolean(curLoad + "global")) point.setGlobal(savePointConfig.getBoolean(curLoad + "global"));
                 if(savePointConfig.isInt(curLoad + "range")) point.setMaxRange(savePointConfig.getInt(curLoad + "range"));
-                this.currentPoints.add(point);
+                this.currentPoints.put(load, point);
             } catch (Exception e) {
             }
         }

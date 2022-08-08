@@ -29,9 +29,7 @@ public class TogglePoint extends QuestEvent {
     protected Void execute(String playerID) throws QuestRuntimeException {
         Player player = PlayerConverter.getPlayer(playerID);
         SavePointConfig.getInstance().togglePlayerPoint(player.getUniqueId(), name, toToggle);
-        CompassInstance.getInstance().saveData();
-        SavePointConfig.getInstance().saveData();
-        CompassInstance.getInstance().load();
+
         return null;
     }
 

@@ -13,6 +13,7 @@ public class SavePoint {
     private boolean isMythic;
     private boolean isNPC;
     private boolean isGlobal;
+    private boolean isTowny;
     private int maxRange;
 
     public SavePoint(Location loc1, String name,  String symbol, String hov) {
@@ -25,6 +26,7 @@ public class SavePoint {
         isMythic = false;
         isNPC = false;
         isGlobal = false;
+        isTowny = false;
         maxRange = 0;
     }
 
@@ -50,6 +52,14 @@ public class SavePoint {
 
     public void setMythic(boolean mythic) {
         isMythic = mythic;
+    }
+
+    public boolean isTowny() {
+        return isTowny;
+    }
+
+    public void setTowny(boolean towny) {
+        isTowny = towny;
     }
 
     public boolean isNPC() {

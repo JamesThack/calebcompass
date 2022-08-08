@@ -1,0 +1,9 @@
+default-town-symbol: ' &c&lT '
+default-town-symbol-hovered: ' &b&lT '
+default-town-range: 50
+show-towns-by-default: true
+custom-town-overrides:
+  town-name-example:
+    town-symbol: ' &c&lT '
+    town-symbol-hovered: ' &e&lT '
+    town-range: 60

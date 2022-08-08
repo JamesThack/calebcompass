@@ -20,7 +20,6 @@ public class ItemFocus implements Listener {
         Material focusItem = ConfigManager.getInstance().getFocusItem();
         if (!e.getPlayer().getInventory().getItemInMainHand().getType().equals(focusItem) && !e.getPlayer().getInventory().getItemInOffHand().getType().equals(focusItem)) return;
         Player player = e.getPlayer();
-        SavePointConfig.getInstance().load();
         SavePoint point = CalebCompassCommand.getSavePointAtLoc(player);
         if (point == null) return;
         CompassInstance.getInstance().getCompassLocation(player).setTarget(point.getLoc1());

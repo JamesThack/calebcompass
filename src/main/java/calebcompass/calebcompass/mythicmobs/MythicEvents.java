@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
 public class MythicEvents extends BukkitRunnable {
+
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {

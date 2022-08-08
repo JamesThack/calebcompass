@@ -1,6 +1,10 @@
 package calebcompass.calebcompass.util;
 
 import calebcompass.calebcompass.SavePoints.SavePoint;
+import calebcompass.calebcompass.towny.TownyEvents;
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
@@ -78,6 +82,7 @@ public class CompassConstructor {
     }
 
     private String addInWaypoints(String str) {
+        if (Bukkit.getPluginManager().getPlugin("Towny") != null) TownyEvents.addTownyPoints(player);
         if (location == null || location.getActivePoints() == null) return str;
         ArrayList<SavePoint> extraPoints = location.getActivePoints();
         Location playerLoc = player.getLocation();
@@ -168,10 +173,13 @@ public class CompassConstructor {
         if (location == null || location.getActivePoints() == null) return;
         ArrayList<SavePoint> newPoints = new ArrayList<>();
         for (SavePoint cur : location.getTrueActivePoints()) {
-            if (!cur.isMythic() && !cur.isNPC()) newPoints.add(cur);
+            if (cur == null) continue;
+            if (!cur.isMythic() && !cur.isNPC() && !cur.isTowny()) newPoints.add(cur);
         }
         location.setActivePoints(newPoints);
     }
+
+
 
     private void updateTrackingDistance() {
         if(location == null || location.getTarget() == null || location.getTarget().getWorld() == null ||  !location.getTarget().getWorld().equals(player.getWorld()) || !location.isTracking()) {
@@ -207,6 +215,8 @@ public class CompassConstructor {
         }
         return null;
     }
+
+
 
     //All methods below here are external plugin integrations
 
